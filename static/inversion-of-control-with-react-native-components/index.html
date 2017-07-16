@@ -1,0 +1,281 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Inversion of Control with React Native Components</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=36acbe3795">
+
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Pat Kayongo's Software Development Blog">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Inversion of Control with React Native Components">
+    <meta property="og:description" content="On 26 December 1945, the CFA Franc, a currency still used by many former French colonies in Africa, was created. At the time, after World War 2, the French Franc (the one actually used in France and previously used in the colonies) had been devalued to maintain a fixed exchange">
+    <meta property="og:url" content="http://localhost:2368/inversion-of-control-with-react-native-components/">
+    <meta property="og:image" content="http://localhost:2368/content/images/2017/02/CFP_1000_recto.jpg">
+    <meta property="article:published_time" content="2017-02-28T17:12:17.000Z">
+    <meta property="article:modified_time" content="2017-02-28T17:12:17.000Z">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Inversion of Control with React Native Components">
+    <meta name="twitter:description" content="On 26 December 1945, the CFA Franc, a currency still used by many former French colonies in Africa, was created. At the time, after World War 2, the French Franc (the one actually used in France and previously used in the colonies) had been devalued to maintain a fixed exchange">
+    <meta name="twitter:url" content="http://localhost:2368/inversion-of-control-with-react-native-components/">
+    <meta name="twitter:image" content="http://localhost:2368/content/images/2017/02/CFP_1000_recto.jpg">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Patrick Kayongo">
+    <meta name="twitter:site" content="@patkayongo">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Pat Kayongo&#x27;s Software Development Blog",
+        "logo": "http://localhost:2368/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Patrick Kayongo",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "http://localhost:2368/author/patrick/",
+        "sameAs": []
+    },
+    "headline": "Inversion of Control with React Native Components",
+    "url": "http://localhost:2368/inversion-of-control-with-react-native-components/",
+    "datePublished": "2017-02-28T17:12:17.000Z",
+    "dateModified": "2017-02-28T17:12:17.000Z",
+    "image": "http://localhost:2368/content/images/2017/02/CFP_1000_recto.jpg",
+    "description": "On 26 December 1945, the CFA Franc, a currency still used by many former French colonies in Africa, was created. At the time, after World War 2, the French Franc (the one actually used in France and previously used in the colonies) had been devalued to maintain a fixed exchange",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Pat Kayongo's Software Development Blog" href="../rss/index.html">
+</head>
+<body class="post-template nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="index.html#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home"><a href="../">Home</a></li>
+    </ul>
+        <a class="subscribe-button icon-feed" href="../rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head " style="background-image: url(http://localhost:2368/content/images/2017/02/CFP_1000_recto.jpg)">
+    <nav class="main-nav overlay clearfix">
+        
+            <a class="menu-button icon-menu" href="index.html#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post">
+
+        <header class="post-header">
+            <h1 class="post-title">Inversion of Control with React Native Components</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2017-02-28">28 February 2017</time> 
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>On 26 December 1945, the CFA Franc, a currency still used by many former French colonies in Africa, was created. At the time, after World War 2, the French Franc (the one actually used in France and previously used in the colonies) had been devalued to maintain a fixed exchange rate against the dollar, and France, in its gracious and loving paternity, didn't want the exports from its colonies to receive a lower value, reducing the amount of money available in the colonial economy.</p>
+
+<p>This new currency had a fixed exchange rate to the dollar. To ensure that the exchange rate could remain fixed, the French government had to keep the foreign reserves of these colonies, as a guarantee that foreign currency won't be bought and sold haphazardly by the local government, making it difficult to maintain the fixed exchange rate.</p>
+
+<p>To this day, many of these countries are still required to hold 50% of their reserves in France, to guarantee the stability of the currency. By not having control of these foreign reserves, these <em>"sovereign"</em> states have effectively given away control of their foreign monetary policy to their former colonial masters. They have <strong><em>inverted control</em></strong> of their power.</p>
+
+<p>In software development, Inversion of Control has for some reason become synonymous with Dependency Injection. This is probably because of the wide usage of IoC containers in many popular frameworks, which are used to find and create dependencies to be plugged into modules or classes that need them. But dependency injection is only a <em>type</em> of inversion of control: where control of the creation of dependencies is handed over to something else, instead of classes and modules creating the dependencies.</p>
+
+<p>In React Native, inversion of control can be used to create cleaner, easier to understand components.</p>
+
+<p>Imagine a scenario where Lerato, a software craftswoman, is creating a log book app to record her distance travelled for tax purposes. This app consists of one screen where she enters the date and the kilometres travelled to reach her client:</p>
+
+<pre><code class="language-javascript">import React from 'react';  
+import { View, TextInput, TouchableOpacity, Text } from 'react-native';  
+import LogService from './log-service';
+
+class AddLogEntry extends Component {  
+  constructor(props) {
+    super(props);
+    this.state = {
+      distance: 0,
+      date: ''
+    }
+  }
+
+  render() {
+    return (
+      &lt;View&gt;
+        &lt;TextInput 
+          onChangeText={date =&gt; this.setState({date}) } 
+          value={this.state.date} /&gt;
+
+        &lt;TextInput 
+          onChangeText={distance =&gt; this.setState({distance}) } 
+          value={this.state.distance} /&gt;
+
+        &lt;TouchableOpacity 
+          onPress={() =&gt; LogService.add(this.state.date, this.state.distance)}&gt;
+          &lt;Text&gt;Add&lt;/Text&gt;
+        &lt;/TouchableOpacity&gt;
+      &lt;/View&gt;
+    );
+  }
+}
+</code></pre>
+
+<p>She looks at what she has done. And it is good. And it's only the first day.</p>
+
+<p>Later on, a new requirement comes to edit logbook entries. She decides that there are some reusable components that can come out of the first <code>AddLogEntry</code> component, such as an <code>ActionButton</code> button component. So she decides to create this:</p>
+
+<pre><code class="language-javascript">function ActionButton(props) {  
+  return (
+    &lt;TouchableOpacity 
+      onPress={() =&gt; LogService.add(this.state.date, this.state.distance)}&gt;
+      &lt;Text&gt;{props.buttonTitle}&lt;/Text&gt;
+    &lt;/TouchableOpacity&gt;
+  );
+}
+</code></pre>
+
+<p>and it is used as follows:</p>
+
+<pre><code class="language-javascript">&lt;ActionButton buttonTitle="Add" /&gt;  
+</code></pre>
+
+<p>Done. Button inserted. Reusable component done. Well, kinda. </p>
+
+<p>See, the button is still in control of what happens when pressed. Therefore, when using it in different places, one has to add some-kinda flag to it so the new component can figure out what it can do to handle the context specific logic. Or it can <strong><em>invert control</em></strong> to another component who hold the knowledge of what to do. This can be done by having an <em>event</em> callback method that is passed into the component, such as onPress.</p>
+
+<pre><code class="language-javascript">function ActionButton(props) {  
+  return (
+    &lt;TouchableOpacity 
+      onPress={props.onPress}&gt;
+      &lt;Text&gt;{props.buttonTitle}&lt;/Text&gt;
+    &lt;/TouchableOpacity&gt;
+  );
+}
+</code></pre>
+
+<p>Then the controlling component with the knowledge of what to do will pass a reference of a method to this component:</p>
+
+<pre><code class="language-javascript">&lt;ActionButton buttonTitle="Add" onPress={() =&gt; doStuff()} /&gt;  
+</code></pre>
+
+<p>This is a trivial example, but illustrates 2 different types of React Native components:</p>
+
+<ul>
+<li><strong>Controlling Orchestrating Components:</strong> These are components that hold all state of the current <em>scene</em>, as well as handle all logic such as navigating to new scenes, network calls, showing and hiding of other components, etc.</li>
+<li><strong>User Interaction Components:</strong> These components display information to the user, and handle interaction from the user (e.g. text inputs, buttons, date pickers, etc.).</li>
+</ul>
+
+<p>The components which hold all the child components of a particular scene <strong><em>should be</em></strong> the <em>orchestrating components</em> such as the <code>AddLogEntry</code> component above. They should hold all the state of the scene, as well as handle all interactions external to the scene (e.g. with the navigator, network calls, etc.). All child components should then be <em>user interaction components</em> (e.g. the <code>ActionButton</code> component). These should be <em>ignorant</em> components, unaware of the context they are used in. They should receive data through their props, and send user interaction data to the orchestrating components through <em>event callbacks</em>, such as <code>onPress</code> described above, from where the data will be handled according to application logic.</p>
+
+<p>But why are we inverting control from these child user interaction components to the orchestrating components?</p>
+
+<ol>
+<li><p><strong>Single place for application logic.</strong> <br>
+If the application logic for that particular scene is split between different components, e.g. one component does network calls, another component handles navigation logic to load new scenes, and yet another does something else, it would be hard to understand what a particular scene does from just looking at the parent component. One would need to search within each of the child components to get a holistic view.</p></li>
+<li><p><strong>More reusable user interaction components</strong> <br>
+The more ignorant a component is of the different contexts they are used in, the more reusable they are. If they are aware of the contexts they are used in, several conditionals (if-else) need to be placed within these components to handle the context-specific application logic. Ideally, <a href="https://en.wikipedia.org/wiki/Open/closed_principle">components should be open to extension, but closed to modification</a> of existing logic. Embedding logic requires modification when more contexts are added.</p></li>
+<li><p><strong>More holistic unit tests</strong> <br>
+If all application logic is held in a single component, all this logic can be tested by simulating interactions with the child components and asserting how the orchestrating component handles the data, rather than having the tests for this logic split between various component specific test files (this is assuming shallow tests that do not render all the child components). This way, the tests can be used as a reliable and holistic specification of what that particular scene should do.</p></li>
+</ol>
+
+<p>In conclusion, giving control of all application logic to the orchestrating parent components results in clearer and cleaner code and tests, making the application's code base more readable and maintainable by other developers over the long run.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/patrick/" style="background-image: url(http://www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s&amp;)"><span class="hidden">Patrick Kayongo's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/patrick/">Patrick Kayongo</a></h4>
+
+                    <p>Read <a href="../author/patrick/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Inversion%20of%20Control%20with%20React%20Native%20Components&amp;url=http://localhost:2368/inversion-of-control-with-react-native-components/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/inversion-of-control-with-react-native-components/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://localhost:2368/inversion-of-control-with-react-native-components/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+    </article>
+</main>
+
+<aside class="read-next">
+    <a class="read-next-story prev no-cover" href="../en-courage-ment/">
+        <section class="post">
+            <h2>En-courage-ment</h2>
+            <p>Software development is hard. And getting good at it is even harder. One regularly reads about the latest and…</p>
+        </section>
+    </a>
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="../">Pat Kayongo's Software Development Blog</a> © 2017</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=36acbe3795"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=36acbe3795"></script>
+
+</body>

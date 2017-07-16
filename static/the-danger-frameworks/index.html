@@ -1,0 +1,190 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>The Danger with Frameworks</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=36acbe3795">
+
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Pat Kayongo's Software Development Blog">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="The Danger with Frameworks">
+    <meta property="og:description" content="For the past 2 weeks, I have been delving into the magical world of AngularJS and single page applications. This is how the internet should be. Increased processing speeds and more memory have allowed the browser to process a lot more than what was previously feasible, allowing for a much">
+    <meta property="og:url" content="http://localhost:2368/the-danger-frameworks/">
+    <meta property="article:published_time" content="2015-05-14T21:25:27.000Z">
+    <meta property="article:modified_time" content="2015-07-05T21:25:02.000Z">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="The Danger with Frameworks">
+    <meta name="twitter:description" content="For the past 2 weeks, I have been delving into the magical world of AngularJS and single page applications. This is how the internet should be. Increased processing speeds and more memory have allowed the browser to process a lot more than what was previously feasible, allowing for a much">
+    <meta name="twitter:url" content="http://localhost:2368/the-danger-frameworks/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Patrick Kayongo">
+    <meta name="twitter:site" content="@patkayongo">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Pat Kayongo&#x27;s Software Development Blog",
+        "logo": "http://localhost:2368/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Patrick Kayongo",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "http://localhost:2368/author/patrick/",
+        "sameAs": []
+    },
+    "headline": "The Danger with Frameworks",
+    "url": "http://localhost:2368/the-danger-frameworks/",
+    "datePublished": "2015-05-14T21:25:27.000Z",
+    "dateModified": "2015-07-05T21:25:02.000Z",
+    "description": "For the past 2 weeks, I have been delving into the magical world of AngularJS and single page applications. This is how the internet should be. Increased processing speeds and more memory have allowed the browser to process a lot more than what was previously feasible, allowing for a much",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Pat Kayongo's Software Development Blog" href="../rss/index.html">
+</head>
+<body class="post-template nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="index.html#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home"><a href="../">Home</a></li>
+    </ul>
+        <a class="subscribe-button icon-feed" href="../rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button icon-menu" href="index.html#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post">
+
+        <header class="post-header">
+            <h1 class="post-title">The Danger with Frameworks</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-05-14">14 May 2015</time> 
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>For the past 2 weeks, I have been delving into the magical world of AngularJS and single page applications. This is how the internet should be. Increased processing speeds and more memory have allowed the browser to process a lot more than what was previously feasible, allowing for a much better experience for the user.</p>
+
+<p>Once one understands the main components of the Angular framework and how they fit together, creating an application isn’t too difficult. For smaller applications, it’s a lot easier. For larger applications, the learning curve may get steep. But it’s still made it so much easier to do what would take forever to do without the framework. And this may be part of the problem.</p>
+
+<p>When one uses the framework (or any other framework such as ASP.Net, Spring, Django, Rails, etc), the developer can become really good at the framework, but may forego understanding on the layers that the framework abstract. So someone can put together an ASP.Net MVC project in a few minutes, but be completely oblivious to how a web request is handled by IIS (or possible Linux these days), and handled by the application. Someone can use Hibernate to abstract connections to the database, but be completely oblivious of the underlying mechanisms the application uses to connect to the database. And this leads to enslavement to the framework.</p>
+
+<p>Imagine an ASP.Net WebForms (or JSP) developer from 10 years ago. Let’s call him Farai. He knows how to create massive web applications with the tools he has been given. ListViews. GridViews. Repeaters. TextBoxes. Update panels. He becomes really good at creating WebForms applications. He is promoted to senior developer in his organisation. Then ASP.Net MVC comes along. He feels threatened because this is a completely new way of doing things. He has to start from scratch. He advises his company against using the new technology, giving the appearance of prudence. Then single page applications come along with frameworks such as Knockout and Angular. His company and clients are wondering how to make their application look and feel like the other modern applications. He can’t adapt. He gets frustrated.</p>
+
+<p>On the other hand, meet Thandi. She started off as an ASP.Net WebForms developer. She started off her career creating applications with WebForms. She also chose to dig deeper and understand the layers the WebForms framework abstracts. Then ASP.Net MVC comes along. Because she understands the underlying framework, she can see that it was built on top of the same framework as WebForms, and therefore shares many similarities. When asked whether to choose one or the other, she makes an informed decision, rather than one just trying to protect herself. When the client side frameworks come along, she gets excited about what they can do. She understands how the web works.</p>
+
+<p>Farai’s story is one that is common for many developers. Enslaved by the framework. For adaptability and understanding, it pays a little more to dig a little deeper. Be like Thandi.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/patrick/" style="background-image: url(http://www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s&amp;)"><span class="hidden">Patrick Kayongo's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/patrick/">Patrick Kayongo</a></h4>
+
+                    <p>Read <a href="../author/patrick/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=The%20Danger%20with%20Frameworks&amp;url=http://localhost:2368/the-danger-frameworks/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/the-danger-frameworks/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://localhost:2368/the-danger-frameworks/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+    </article>
+</main>
+
+<aside class="read-next">
+    <a class="read-next-story no-cover" href="../tdd-research/">
+        <section class="post">
+            <h2>TDD Research</h2>
+            <p>As part of my masters programme at the University of Cape Town, I’m trying to understand why people…</p>
+        </section>
+    </a>
+    <a class="read-next-story prev no-cover" href="../new-city-new-job/">
+        <section class="post">
+            <h2>New City. New Job.</h2>
+            <p>At the beginning of this month, I moved to Johannesburg, and started working at ThoughtWorks. It has been an…</p>
+        </section>
+    </a>
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="../">Pat Kayongo's Software Development Blog</a> © 2017</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=36acbe3795"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=36acbe3795"></script>
+
+</body>

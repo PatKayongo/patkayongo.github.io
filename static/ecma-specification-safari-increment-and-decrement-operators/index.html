@@ -1,0 +1,198 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>ECMA Specification Safari: Increment (and Decrement) Operators</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=36acbe3795">
+
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Pat Kayongo's Software Development Blog">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ECMA Specification Safari: Increment (and Decrement) Operators">
+    <meta property="og:description" content="Recently, I’ve started reading through the ECMA Script (JavaScript) specification to get a more in depth understanding of the language I seem to be using every day. There are some interesting things I am coming across. Today’s interesting thing is increment and decrement operators. There are two ways">
+    <meta property="og:url" content="http://localhost:2368/ecma-specification-safari-increment-and-decrement-operators/">
+    <meta property="article:published_time" content="2016-05-10T22:41:45.000Z">
+    <meta property="article:modified_time" content="2017-02-13T17:40:30.000Z">
+    <meta property="article:tag" content="increment operator">
+    <meta property="article:tag" content="javascript">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="ECMA Specification Safari: Increment (and Decrement) Operators">
+    <meta name="twitter:description" content="Recently, I’ve started reading through the ECMA Script (JavaScript) specification to get a more in depth understanding of the language I seem to be using every day. There are some interesting things I am coming across. Today’s interesting thing is increment and decrement operators. There are two ways">
+    <meta name="twitter:url" content="http://localhost:2368/ecma-specification-safari-increment-and-decrement-operators/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Patrick Kayongo">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="increment operator, javascript">
+    <meta name="twitter:site" content="@patkayongo">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Pat Kayongo&#x27;s Software Development Blog",
+        "logo": "http://localhost:2368/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Patrick Kayongo",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "http://localhost:2368/author/patrick/",
+        "sameAs": []
+    },
+    "headline": "ECMA Specification Safari: Increment (and Decrement) Operators",
+    "url": "http://localhost:2368/ecma-specification-safari-increment-and-decrement-operators/",
+    "datePublished": "2016-05-10T22:41:45.000Z",
+    "dateModified": "2017-02-13T17:40:30.000Z",
+    "keywords": "increment operator, javascript",
+    "description": "Recently, I’ve started reading through the ECMA Script (JavaScript) specification to get a more in depth understanding of the language I seem to be using every day. There are some interesting things I am coming across. Today’s interesting thing is increment and decrement operators. There are two ways",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Pat Kayongo's Software Development Blog" href="../rss/index.html">
+</head>
+<body class="post-template tag-increment-operator tag-javascript nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="index.html#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home"><a href="../">Home</a></li>
+    </ul>
+        <a class="subscribe-button icon-feed" href="../rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button icon-menu" href="index.html#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-increment-operator tag-javascript">
+
+        <header class="post-header">
+            <h1 class="post-title">ECMA Specification Safari: Increment (and Decrement) Operators</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2016-05-11">11 May 2016</time>  on <a href="../tag/increment-operator/">increment operator</a>, <a href="../tag/javascript/">javascript</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>Recently, I’ve started reading through the ECMA Script (JavaScript) specification to get a more in depth understanding of the language I seem to be using every day. There are some interesting things I am coming across. Today’s interesting thing is increment and decrement operators.</p>
+
+<p>There are two ways of incrementing a variable (decrementing the variable works in the same way): putting the increment operator before or after the variable.</p>
+
+<pre><code>var prefixIncrementVariable = "4" 
+var postfixIncrementVariable = "4" 
+++ prefixIncrementVariable // returns 5 
+postfixIncrementVariable ++ // returns 4
+</code></pre>
+
+<p>What both operators do is convert the variable into a number, and then increment the variable, changing the value of the variable to one plus the original value. The difference between the two is that the prefix increment notation returns the new value of the variable (5 in this case) as a result of the operation, while the postfix increment notation returns the old value of the variable (which is 4) as the result of the operation.</p>
+
+<p>This sounds a bit confusing, but it highlights that the <strong><em>effect</em></strong> of an operation is not necessarily the <strong><em>result</em></strong> of the operation. One can think of it as in the case of a function call. The effect is whatever is done within the function. The result is whatever is returned by the function. Interesting.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/patrick/" style="background-image: url(http://www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s&amp;)"><span class="hidden">Patrick Kayongo's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/patrick/">Patrick Kayongo</a></h4>
+
+                    <p>Read <a href="../author/patrick/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=ECMA%20Specification%20Safari%3A%20Increment%20(and%20Decrement)%20Operators&amp;url=http://localhost:2368/ecma-specification-safari-increment-and-decrement-operators/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/ecma-specification-safari-increment-and-decrement-operators/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://localhost:2368/ecma-specification-safari-increment-and-decrement-operators/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+    </article>
+</main>
+
+<aside class="read-next">
+    <a class="read-next-story no-cover" href="../pairing-vs-pull-request-reviews/">
+        <section class="post">
+            <h2>Pairing vs Pull Request Reviews</h2>
+            <p>Some like them. Some hate them. But code reviews are a good thing. Some may think they are demigods…</p>
+        </section>
+    </a>
+    <a class="read-next-story prev no-cover" href="../what-is-a-class-and-why-to-avoid-static-methods/">
+        <section class="post">
+            <h2>What Is A Class (and why to avoid static methods)</h2>
+            <p>There are many debates in software development, from how to test, to languages, to frameworks, and everything under the…</p>
+        </section>
+    </a>
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="../">Pat Kayongo's Software Development Blog</a> © 2017</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=36acbe3795"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=36acbe3795"></script>
+
+</body>

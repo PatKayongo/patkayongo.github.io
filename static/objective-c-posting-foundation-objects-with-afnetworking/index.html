@@ -1,0 +1,244 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Objective C: Posting Foundation Objects with AFNetworking</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=36acbe3795">
+
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Pat Kayongo's Software Development Blog">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Objective C: Posting Foundation Objects with AFNetworking">
+    <meta property="og:description" content="The scenario was this. I had Objective C objects which I needed to parse as JSON, and send a POST request to a web server. At first, I used RestKit because that’s the framework that’s being used in the project, but that was giving issues, so I decided">
+    <meta property="og:url" content="http://localhost:2368/objective-c-posting-foundation-objects-with-afnetworking/">
+    <meta property="article:published_time" content="2015-01-09T11:20:53.000Z">
+    <meta property="article:modified_time" content="2017-02-13T18:44:20.000Z">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Objective C: Posting Foundation Objects with AFNetworking">
+    <meta name="twitter:description" content="The scenario was this. I had Objective C objects which I needed to parse as JSON, and send a POST request to a web server. At first, I used RestKit because that’s the framework that’s being used in the project, but that was giving issues, so I decided">
+    <meta name="twitter:url" content="http://localhost:2368/objective-c-posting-foundation-objects-with-afnetworking/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Patrick Kayongo">
+    <meta name="twitter:site" content="@patkayongo">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Pat Kayongo&#x27;s Software Development Blog",
+        "logo": "http://localhost:2368/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Patrick Kayongo",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "http://localhost:2368/author/patrick/",
+        "sameAs": []
+    },
+    "headline": "Objective C: Posting Foundation Objects with AFNetworking",
+    "url": "http://localhost:2368/objective-c-posting-foundation-objects-with-afnetworking/",
+    "datePublished": "2015-01-09T11:20:53.000Z",
+    "dateModified": "2017-02-13T18:44:20.000Z",
+    "description": "The scenario was this. I had Objective C objects which I needed to parse as JSON, and send a POST request to a web server. At first, I used RestKit because that’s the framework that’s being used in the project, but that was giving issues, so I decided",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Pat Kayongo's Software Development Blog" href="../rss/index.html">
+</head>
+<body class="post-template nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="index.html#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home"><a href="../">Home</a></li>
+    </ul>
+        <a class="subscribe-button icon-feed" href="../rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button icon-menu" href="index.html#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post">
+
+        <header class="post-header">
+            <h1 class="post-title">Objective C: Posting Foundation Objects with AFNetworking</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-01-09">09 January 2015</time> 
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>The scenario was this. I had Objective C objects which I needed to parse as JSON, and send a POST request to a web server. At first, I used RestKit because that’s the framework that’s being used in the project, but that was giving issues, so I decided to strip it down a level, and use AFNetworking. I searched the internet for hours on how to do it, and good reading was hard to find. Here’s how I did it to anyone who may be in this position in future:  </p>
+
+<p>First of all, the here’s a simplified version of the piece of code that does the work. I’ll talk through it step by step:</p>
+
+<pre><code>NSMutableURLRequest *request = [self postRequestWithObject:objectToParse andPath:@"path/to/endpoint"]; 
+AFHTTPRequestOperation *requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];   
+[requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) { 
+    // What happens when it goes right }   
+failure:^(AFHTTPRequestOperation *operation, NSError *error) { 
+    // What happens when it goes wrong 
+}]; 
+[requestOperation start];
+</code></pre>
+
+<p>The first line calls a method which creates the request object based on the path to the endpoint. This method is as follows:</p>
+
+<pre><code>- (NSMutableURLRequest *)postRequestWithObject:(NSObject *)object andPath:(NSString *)path 
+{ 
+    NSString *baseUrl = @"www.codingafro.co/"; 
+    NSString *fullUrlString = [NSString stringWithFormat:@"%@%@", baseUrl, path]; 
+    NSURL *requestURL = [NSURL URLWithString:fullUrlString]; 
+    NSMutableURLRequest *request = [[NSURLRequest requestWithURL:requestURL] mutableCopy]; 
+    request.HTTPMethod = @"POST"; 
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"]; 
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"]; 
+    NSError *error = nil; 
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[object dictionaryOfProperties] options:NSJSONWritingPrettyPrinted error:&amp;error]; 
+    NSMutableData *bodyData = [NSMutableData data]; 
+    [bodyData appendData:jsonData]; 
+    request.HTTPBody = bodyData; 
+    return request; 
+}
+</code></pre>
+
+<p>The complete URL is first built up based on the base url, as well as the path to the endpoint. After this a request object is created based on the URL to the endpoint. A dictionary of property names and values of the object is then created, and this is serialised into JSON. This JSON is added to the body of the request.</p>
+
+<p>To create a dictionary of property names and values, I created a category of NSObject so that it can be used by other objects at other times. This may not be the best approach, and I’m open to correction:</p>
+
+<pre><code>#import &lt;objc/runtime.h&gt; 
+
+@implementation NSObject (Utility) 
+
+- (NSDictionary *)dictionaryOfProperties 
+{ 
+    NSMutableDictionary *objectPropertyValueDictionary = [[NSMutableDictionary alloc] init]; 
+    unsigned int numberOfProperties = 0; 
+    objc_property_t *propertyArray = class_copyPropertyList([self class], &amp;numberOfProperties); 
+
+    for (NSUInteger i = 0; i &lt; numberOfProperties; i++) 
+    { 
+        objc_property_t property = propertyArray[i];  
+        NSString *name = [[NSString alloc] initWithUTF8String:property_getName(property)]; 
+        NSString *value = [self valueForKey:name]; 
+        [objectPropertyValueDictionary addEntriesFromDictionary:@{ name : value }]; 
+    } 
+
+    return objectPropertyValueDictionary; 
+} 
+
+@end
+</code></pre>
+
+<p>Back to the original code excerpt, now that we have the request, we just create a request operation (AFHTTPRequestOperation), and set the completion and failure blocks. Then start the operation. And done.</p>
+
+<p>Any way that this can be improved?</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/patrick/" style="background-image: url(http://www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s&amp;)"><span class="hidden">Patrick Kayongo's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/patrick/">Patrick Kayongo</a></h4>
+
+                    <p>Read <a href="../author/patrick/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Objective%20C%3A%20Posting%20Foundation%20Objects%20with%20AFNetworking&amp;url=http://localhost:2368/objective-c-posting-foundation-objects-with-afnetworking/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/objective-c-posting-foundation-objects-with-afnetworking/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://localhost:2368/objective-c-posting-foundation-objects-with-afnetworking/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+    </article>
+</main>
+
+<aside class="read-next">
+    <a class="read-next-story no-cover" href="../a-net-developers-initial-thoughts-on-the-django-framework/">
+        <section class="post">
+            <h2>A .Net Developer's Initial Thoughts on the Django Framework</h2>
+            <p>Python has been my ‘I need to learn this sometime soon’ language for the past two years. I’m…</p>
+        </section>
+    </a>
+    <a class="read-next-story prev no-cover" href="../making-change/">
+        <section class="post">
+            <h2>Making Changes to Code</h2>
+            <p>for each desired change, make the change easy (warning: this may be hard), then make the easy change      — Kent…</p>
+        </section>
+    </a>
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="../">Pat Kayongo's Software Development Blog</a> © 2017</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=36acbe3795"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=36acbe3795"></script>
+
+</body>

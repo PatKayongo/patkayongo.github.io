@@ -1,0 +1,737 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0"><channel><title>Pat Kayongo's Software Development Blog</title><description>Thoughts on software development. Pan-African.</description><link>http://localhost:2368/</link><generator>Ghost 0.11</generator><lastBuildDate>Sun, 16 Jul 2017 10:50:33 GMT</lastBuildDate><atom:link href="http://localhost:2368/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Inversion of Control with React Native Components</title><description>&lt;p&gt;On 26 December 1945, the CFA Franc, a currency still used by many former French colonies in Africa, was created. At the time, after World War 2, the French Franc (the one actually used in France and previously used in the colonies) had been devalued to maintain a fixed exchange&lt;/p&gt;</description><link>http://localhost:2368/inversion-of-control-with-react-native-components/</link><guid isPermaLink="false">dc9318d9-93d1-4c36-ae42-2b110ab4f35f</guid><dc:creator>Patrick Kayongo</dc:creator><pubDate>Tue, 28 Feb 2017 17:12:17 GMT</pubDate><media:content url="http://localhost:2368/content/images/2017/02/CFP_1000_recto.jpg" medium="image"/><content:encoded>&lt;img src="http://localhost:2368/content/images/2017/02/CFP_1000_recto.jpg" alt="Inversion of Control with React Native Components"&gt;&lt;p&gt;On 26 December 1945, the CFA Franc, a currency still used by many former French colonies in Africa, was created. At the time, after World War 2, the French Franc (the one actually used in France and previously used in the colonies) had been devalued to maintain a fixed exchange rate against the dollar, and France, in its gracious and loving paternity, didn't want the exports from its colonies to receive a lower value, reducing the amount of money available in the colonial economy.&lt;/p&gt;
+
+&lt;p&gt;This new currency had a fixed exchange rate to the dollar. To ensure that the exchange rate could remain fixed, the French government had to keep the foreign reserves of these colonies, as a guarantee that foreign currency won't be bought and sold haphazardly by the local government, making it difficult to maintain the fixed exchange rate.&lt;/p&gt;
+
+&lt;p&gt;To this day, many of these countries are still required to hold 50% of their reserves in France, to guarantee the stability of the currency. By not having control of these foreign reserves, these &lt;em&gt;"sovereign"&lt;/em&gt; states have effectively given away control of their foreign monetary policy to their former colonial masters. They have &lt;strong&gt;&lt;em&gt;inverted control&lt;/em&gt;&lt;/strong&gt; of their power.&lt;/p&gt;
+
+&lt;p&gt;In software development, Inversion of Control has for some reason become synonymous with Dependency Injection. This is probably because of the wide usage of IoC containers in many popular frameworks, which are used to find and create dependencies to be plugged into modules or classes that need them. But dependency injection is only a &lt;em&gt;type&lt;/em&gt; of inversion of control: where control of the creation of dependencies is handed over to something else, instead of classes and modules creating the dependencies.&lt;/p&gt;
+
+&lt;p&gt;In React Native, inversion of control can be used to create cleaner, easier to understand components.&lt;/p&gt;
+
+&lt;p&gt;Imagine a scenario where Lerato, a software craftswoman, is creating a log book app to record her distance travelled for tax purposes. This app consists of one screen where she enters the date and the kilometres travelled to reach her client:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;import React from 'react';  
+import { View, TextInput, TouchableOpacity, Text } from 'react-native';  
+import LogService from './log-service';
+
+class AddLogEntry extends Component {  
+  constructor(props) {
+    super(props);
+    this.state = {
+      distance: 0,
+      date: ''
+    }
+  }
+
+  render() {
+    return (
+      &amp;lt;View&amp;gt;
+        &amp;lt;TextInput 
+          onChangeText={date =&amp;gt; this.setState({date}) } 
+          value={this.state.date} /&amp;gt;
+
+        &amp;lt;TextInput 
+          onChangeText={distance =&amp;gt; this.setState({distance}) } 
+          value={this.state.distance} /&amp;gt;
+
+        &amp;lt;TouchableOpacity 
+          onPress={() =&amp;gt; LogService.add(this.state.date, this.state.distance)}&amp;gt;
+          &amp;lt;Text&amp;gt;Add&amp;lt;/Text&amp;gt;
+        &amp;lt;/TouchableOpacity&amp;gt;
+      &amp;lt;/View&amp;gt;
+    );
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;She looks at what she has done. And it is good. And it's only the first day.&lt;/p&gt;
+
+&lt;p&gt;Later on, a new requirement comes to edit logbook entries. She decides that there are some reusable components that can come out of the first &lt;code&gt;AddLogEntry&lt;/code&gt; component, such as an &lt;code&gt;ActionButton&lt;/code&gt; button component. So she decides to create this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;function ActionButton(props) {  
+  return (
+    &amp;lt;TouchableOpacity 
+      onPress={() =&amp;gt; LogService.add(this.state.date, this.state.distance)}&amp;gt;
+      &amp;lt;Text&amp;gt;{props.buttonTitle}&amp;lt;/Text&amp;gt;
+    &amp;lt;/TouchableOpacity&amp;gt;
+  );
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and it is used as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;&amp;lt;ActionButton buttonTitle="Add" /&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Done. Button inserted. Reusable component done. Well, kinda. &lt;/p&gt;
+
+&lt;p&gt;See, the button is still in control of what happens when pressed. Therefore, when using it in different places, one has to add some-kinda flag to it so the new component can figure out what it can do to handle the context specific logic. Or it can &lt;strong&gt;&lt;em&gt;invert control&lt;/em&gt;&lt;/strong&gt; to another component who hold the knowledge of what to do. This can be done by having an &lt;em&gt;event&lt;/em&gt; callback method that is passed into the component, such as onPress.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;function ActionButton(props) {  
+  return (
+    &amp;lt;TouchableOpacity 
+      onPress={props.onPress}&amp;gt;
+      &amp;lt;Text&amp;gt;{props.buttonTitle}&amp;lt;/Text&amp;gt;
+    &amp;lt;/TouchableOpacity&amp;gt;
+  );
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then the controlling component with the knowledge of what to do will pass a reference of a method to this component:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;&amp;lt;ActionButton buttonTitle="Add" onPress={() =&amp;gt; doStuff()} /&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is a trivial example, but illustrates 2 different types of React Native components:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Controlling Orchestrating Components:&lt;/strong&gt; These are components that hold all state of the current &lt;em&gt;scene&lt;/em&gt;, as well as handle all logic such as navigating to new scenes, network calls, showing and hiding of other components, etc.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;User Interaction Components:&lt;/strong&gt; These components display information to the user, and handle interaction from the user (e.g. text inputs, buttons, date pickers, etc.).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The components which hold all the child components of a particular scene &lt;strong&gt;&lt;em&gt;should be&lt;/em&gt;&lt;/strong&gt; the &lt;em&gt;orchestrating components&lt;/em&gt; such as the &lt;code&gt;AddLogEntry&lt;/code&gt; component above. They should hold all the state of the scene, as well as handle all interactions external to the scene (e.g. with the navigator, network calls, etc.). All child components should then be &lt;em&gt;user interaction components&lt;/em&gt; (e.g. the &lt;code&gt;ActionButton&lt;/code&gt; component). These should be &lt;em&gt;ignorant&lt;/em&gt; components, unaware of the context they are used in. They should receive data through their props, and send user interaction data to the orchestrating components through &lt;em&gt;event callbacks&lt;/em&gt;, such as &lt;code&gt;onPress&lt;/code&gt; described above, from where the data will be handled according to application logic.&lt;/p&gt;
+
+&lt;p&gt;But why are we inverting control from these child user interaction components to the orchestrating components?&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Single place for application logic.&lt;/strong&gt; &lt;br&gt;
+If the application logic for that particular scene is split between different components, e.g. one component does network calls, another component handles navigation logic to load new scenes, and yet another does something else, it would be hard to understand what a particular scene does from just looking at the parent component. One would need to search within each of the child components to get a holistic view.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;More reusable user interaction components&lt;/strong&gt; &lt;br&gt;
+The more ignorant a component is of the different contexts they are used in, the more reusable they are. If they are aware of the contexts they are used in, several conditionals (if-else) need to be placed within these components to handle the context-specific application logic. Ideally, &lt;a href="https://en.wikipedia.org/wiki/Open/closed_principle"&gt;components should be open to extension, but closed to modification&lt;/a&gt; of existing logic. Embedding logic requires modification when more contexts are added.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;More holistic unit tests&lt;/strong&gt; &lt;br&gt;
+If all application logic is held in a single component, all this logic can be tested by simulating interactions with the child components and asserting how the orchestrating component handles the data, rather than having the tests for this logic split between various component specific test files (this is assuming shallow tests that do not render all the child components). This way, the tests can be used as a reliable and holistic specification of what that particular scene should do.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In conclusion, giving control of all application logic to the orchestrating parent components results in clearer and cleaner code and tests, making the application's code base more readable and maintainable by other developers over the long run.&lt;/p&gt;</content:encoded></item><item><title>En-courage-ment</title><description>&lt;p&gt;Software development is hard. And getting good at it is even harder. One regularly reads about the latest and greatest technology one has to know about, or the latest greatest technique that one has to adopt, or they are to be seen as 'doing it all wrong'. Continuously up-skilling oneself&lt;/p&gt;</description><link>http://localhost:2368/en-courage-ment/</link><guid isPermaLink="false">af878fc0-467a-48f5-865b-4053b11d6ea7</guid><dc:creator>Patrick Kayongo</dc:creator><pubDate>Thu, 23 Feb 2017 15:35:44 GMT</pubDate><content:encoded>&lt;p&gt;Software development is hard. And getting good at it is even harder. One regularly reads about the latest and greatest technology one has to know about, or the latest greatest technique that one has to adopt, or they are to be seen as 'doing it all wrong'. Continuously up-skilling oneself with a deeper knowledge of current tools, languages and techniques, while at the same time learning new ones is quite a daunting task.&lt;/p&gt;
+
+&lt;p&gt;When moving this blog over to Ghost and reading through older entries, I came across a post &lt;a href="https://blog.patkayongo.co.za/why-microsoft-1/"&gt;where I was raving about how great Microsoft technologies are&lt;/a&gt;, and how I prefer using them over any other technology. Which is funny, because the only thing Microsoft-related I use now in my daily work is Visual Studio Code.&lt;/p&gt;
+
+&lt;p&gt;At the time of writing that post, I hadn't done much in other languages. I had tried, but couldn't seem to get it. And a bruised, defensive ego clung onto the drag-and-drop do-it-all-for-you Microsoft  tools that I had grown so familiar with, making everything else seem so foreign.&lt;/p&gt;
+
+&lt;p&gt;Lack of courage makes the unknown seem risky, both consciously and unconsciously. Our time would be more efficiently spent doing things we are familiar with. Also, our ego would be more protected doing things we know we can achieve.&lt;/p&gt;
+
+&lt;p&gt;In introducing new languages, techniques and practices to individuals and to a team, before there is buy-in, people need to feel empowered, part of which includes being en-couraged - given the &lt;strong&gt;&lt;em&gt;courage&lt;/em&gt;&lt;/strong&gt; to feel that they can succeed in performing. Social scientists sometimes refer to this as &lt;em&gt;perceived behavioural control&lt;/em&gt; or &lt;em&gt;self-efficacy&lt;/em&gt;, which is a &lt;a href="https://en.wikipedia.org/wiki/Theory_of_planned_behavior"&gt;factor affecting whether a behaviour is performed or not&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is an aspect that differentiates technical leaders who just &lt;em&gt;dictate&lt;/em&gt; change from those who &lt;em&gt;effect&lt;/em&gt; change. The latter spends time with individuals, understanding both the technical and emotional aspects at play, and seeks ways to reduce the deficiencies through en-&lt;strong&gt;&lt;em&gt;courage&lt;/em&gt;&lt;/strong&gt;-ment techniques such as pairing and em-&lt;strong&gt;&lt;em&gt;power&lt;/em&gt;&lt;/strong&gt;-ment techniques- giving the power to effect change - such as training.&lt;/p&gt;
+
+&lt;p&gt;In attempting to understand possible causes for the lack of buy-in and adoption of new tools, languages, techniques and practices, discouragement and disempowerment may be lurking, disguised as stubbornness or general apathy. The approach then is not one of force, but of gentleness.&lt;/p&gt;</content:encoded></item><item><title>Testing React (&amp; Native) Components</title><description>&lt;p&gt;React is big. Really big. It is the web framework that you need to be doing right now. It was the Ruby on Rails of 2016. You had to be doing it with a double mocha. And a beard. And a comb-over. Unless you're black. Or a woman. Or sane.&lt;/p&gt;</description><link>http://localhost:2368/testing-react-native-the-what-2/</link><guid isPermaLink="false">d11811b2-d155-4460-9852-e3d8a6eff158</guid><dc:creator>Patrick Kayongo</dc:creator><pubDate>Tue, 21 Feb 2017 18:03:45 GMT</pubDate><content:encoded>&lt;p&gt;React is big. Really big. It is the web framework that you need to be doing right now. It was the Ruby on Rails of 2016. You had to be doing it with a double mocha. And a beard. And a comb-over. Unless you're black. Or a woman. Or sane. Then maybe not a comb-over.&lt;/p&gt;
+
+&lt;p&gt;The component based approach of React is really great. The idea of building these small components that do one thing, and do it well, and using these as building blocks of a larger app. Really good principles. Single Responsibility or something like that.&lt;/p&gt;
+
+&lt;p&gt;Also, the combination of layout (the JSX) and the JavaScript logic behind it is an interesting approach. At first, I was kinda against it, because we have been indoctrinated into not doing this for a really long time. Yet, I read somewhere that such a separation is superficial, because the JavaScript actually directly affects the layout components, making them part of the same thing. And a rule of thumb is "the things that change together should stay together".&lt;/p&gt;
+
+&lt;p&gt;Now, if you have these independent components, that are the building blocks of your application, the question is what do these components do? And by implication, what does one test?&lt;/p&gt;
+
+&lt;p&gt;Aside: why test? Because it's good for designing your code in a simple, modular way. It also allows for picking up regression bugs if someone else makes changes and introduces defects, thereby giving a team more confidence to make changes. More confidence means the team can respond to changes quicker, thereby making the team more 'agile' (is that still a thing?).&lt;/p&gt;
+
+&lt;p&gt;Whenever one is testing a module (generic &lt;em&gt;trying-to-sound-clever&lt;/em&gt; word for a 'thing'), one tests that:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Given an input, or a condition  &lt;/li&gt;
+&lt;li&gt;When I do a certain action  &lt;/li&gt;
+&lt;li&gt;Then what is the output, or result&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In a React component, there are 2 inputs (I can think of right now) to a component:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Props passed into the component&lt;/li&gt;
+&lt;li&gt;Results from an outside call (e.g. a network call)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There are 2 kinds of actions that can take place:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The creation and mounting of the component&lt;/li&gt;
+&lt;li&gt;An event that takes place on one of the child components (e.g. a button is pressed)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Lastly, there are 4 kinds of outputs, or results from a react component:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Rendered child components&lt;/li&gt;
+&lt;li&gt;Events that are emitted (e.g. onActionHappened)&lt;/li&gt;
+&lt;li&gt;Network calls are made&lt;/li&gt;
+&lt;li&gt;Messages sent to overarching controlling components, such as a navigator in React Native.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So, when writing a test for the functionality of a component, one would start with the inputs. In these example, I will be using the enzyme library from Airbnb to return a shallow render of the component. This calls the &lt;code&gt;render&lt;/code&gt; function of the specified component to test the output, but does not render the child components within the component under test. &lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;import { shallow } from 'enzyme';  
+import MyComponent from './my-component';
+
+describe('when I give "Mpho" as a name', () =&amp;gt; {  
+    const myComponent = shallow(&amp;lt;MyComponent name="Mpho" /&amp;gt;)
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This could also be a result of a network request, in which case you could stub out whichever library you are using for the requests (e.g. fetch-everywhere or xhr), and return a pre-defined result.&lt;/p&gt;
+
+&lt;p&gt;From here, one would then go to the action, and then test the result of the action. Such an action could be creation of the component:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;describe('when I give "Mpho" as a name', () =&amp;gt; {  
+    it('should display the name in a text field', () =&amp;gt; {
+        const myComponent = shallow(&amp;lt;MyComponent name="Mpho" /&amp;gt;);
+        expect(myComponent.containsMatchingElement(&amp;lt;Text&amp;gt;{'Mpho'}&amp;lt;/Text&amp;gt;)).toEqual(true);
+    });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If the action is an event from a child component, e.g. a button press, the output could be tested as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;describe('when I give "Mpho" as a name', () =&amp;gt; {  
+    it('should display the name in a text field', () =&amp;gt; {
+        const myComponent = shallow(&amp;lt;MyComponent name="Mpho" /&amp;gt;);
+        myComponent.find(TouchableOpacity).simulate('press');
+        expect(myComponent.containsMatchingElement(&amp;lt;Text&amp;gt;{'Mpho'}&amp;lt;/Text&amp;gt;)).toEqual(true);
+    });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As mentioned earlier, the output could be rendered components, as tested above; or network requests, which could be tested by spying on whichever network library is used; or events emitted, which could be tested by spying on the handler function passed in as properties of the component under test. Sinon is a great library for creating spies and stubs.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;import sinon from 'sinon';  
+const actionHandler = sinon.spy();  
+const myComponent = shallow(&amp;lt;MyComponent name="Mpho" onActionHappened={actionHandler} /&amp;gt;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;One of the concerns I had when testing components was that the implementation is closely tied to the tests (i.e. if one changes from a TouchableOpacity to a TouchableHighlight, then the tests have to change). But because, as discussed earlier, the component logic (written in JavaScript) is so closely tied to it's layout (the JSX), so by design, the functionality (logic) cannot and should not be separated from the specific implementation. The rendered layout is a valid external output (and not internal implementation), and if this external output changes, the tests should change to reflect this.&lt;/p&gt;
+
+&lt;p&gt;A way in which to avoid closely tying the tests to implementation would be to avoid testing for &lt;em&gt;internal&lt;/em&gt; changes and function calls. This includes effects on the state of the object. (I say internal with caution because though these are externally accessible, they are only for internal use). One should also try (as far as possible) to avoid testing for the calling of &lt;em&gt;internal&lt;/em&gt; methods of the component. How these methods and state properties are set and called are subject to change. For example, one may decide that they do not want to use state for values that will not change, and set class level variables (e.g. &lt;code&gt;this.myVariable = 'value'&lt;/code&gt;). This will not change the output of the component, and therefore tests should still pass unchanged.&lt;/p&gt;
+
+&lt;p&gt;This becomes tricky when there is asynchronicity involved as a test normally completes before the asynchronous code has run. In the previous example, if the &lt;em&gt;press&lt;/em&gt; action resulted in an asynchronous function call, the assertion would happen before the result of the call. To overcome this, we may need to call a class function as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;describe('when I give "Mpho" as a name', (done) =&amp;gt; {  
+    it('should display the name in a text field', () =&amp;gt; {
+        const myComponent = shallow(&amp;lt;MyComponent name="Mpho" /&amp;gt;);
+        myComponent.instance().handleButtonPress().then(() =&amp;gt; {
+            expect(myComponent.containsMatchingElement(&amp;lt;Text&amp;gt;{'Mpho'}&amp;lt;/Text&amp;gt;)).toEqual(true);
+            done();
+        }); 
+    });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It's ugly I know. And the test is tied too close to the implementation. If you can think of a better way, please suggest.&lt;/p&gt;
+
+&lt;p&gt;A second concern that has been raised is that the tests are too simple, and do not test the wider business logic. I think that's the nature of unit tests. Complementary acceptance and integration tests are needed to have more confidence in the code base. And one may ask, why not have acceptance tests only? And another may answer, because there are a limited number of per-component (or per-unit) scenarios that can be tested with those higher level tests, leaving some parts of the code base untested, reducing the confidence on has in the code base. But many people around the world, a lot smarter than me, are arguing about this. So one can seek their wisdom.&lt;/p&gt;</content:encoded></item><item><title>Pairing vs Pull Request Reviews</title><description>&lt;p&gt;Some like them. Some hate them. But code reviews are a good thing. Some may think they are demigods who fart out perfect code, and therefore think them irrelevant. Others think they are absolutely terrible and don't want to be openly found out, and are therefore scared of them. But&lt;/p&gt;</description><link>http://localhost:2368/pairing-vs-pull-request-reviews/</link><guid isPermaLink="false">d852c49a-c5c9-4c74-a57c-67ac92f0e05d</guid><dc:creator>Patrick Kayongo</dc:creator><pubDate>Tue, 21 Feb 2017 15:06:35 GMT</pubDate><content:encoded>&lt;p&gt;Some like them. Some hate them. But code reviews are a good thing. Some may think they are demigods who fart out perfect code, and therefore think them irrelevant. Others think they are absolutely terrible and don't want to be openly found out, and are therefore scared of them. But they are good.&lt;/p&gt;
+
+&lt;p&gt;For one, they provide knowledge transfer. Firstly, knowledge of what someone did. It gives another developer in a team an understanding of how a feature or requirement was implemented, incase the original developer gets stuck in an eternal line at the Department of Home Affairs (so much better than being hit by a bus). Secondly, new methods and interesting techniques can be learned by seeing how someone does it. In addition to this, bad methods and techniques can be corrected, helping developers improve. Reviews are good both for the developer, and the quality of the code base. But how the reviews are done is a topic of contention. &lt;/p&gt;
+
+&lt;p&gt;There is a caricatured camp, who normally run around calling themselves archaic terms appropriated from an era in European history ('apprentice', 'journeyman' and 'craftsman'). They ordinarily advocate for this idea of 'pairing', where there are two developers, two keyboards and one screen plugged into one computer. These developers continually switch between who is writing the code, and who is an active, engaged observer.&lt;/p&gt;
+
+&lt;p&gt;Then there is another caricatured group. They are normally known to their masters as 'resources'. They normally work individually, committing their changes to a source repository &lt;em&gt;branch&lt;/em&gt;. When they are done (hopefully after a short period of time), they submit a pull-request for the code they have written to be reviewed by someone. This is either by a peer, or the Lord Baal Architect in the team, who suggests changes where necessary, and merges the changes in when happy.&lt;/p&gt;
+
+&lt;p&gt;These are obviously oversimplified, biased versions of each, but the crux each method of reviewing has pros and cons.&lt;/p&gt;
+
+&lt;p&gt;Pull request reviews are great for distributed teams, where one can't sit side by side and online communication is awkward. It is also great for individual problem solving, where talking can become distracting to the thought process. Talking to someone all day is tiring. Especially if they aren't pleasant. And don't wash their hands. And make &lt;em&gt;"that's what she said"&lt;/em&gt; jokes all day. And it may be more clear having someone see the end of your thought process, instead of the unstructured safari in your mind.&lt;/p&gt;
+
+&lt;p&gt;Yet, with these advantages, I have still found pairing to be beneficial for both the individual software developer, and a small co-located software team for the following reasons:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Quicker feedback&lt;/strong&gt; &lt;br&gt;
+If I start working on something at 8am in the morning, work hard through the day, and feel I'm ready to submit my pull-request at 3pm, I have to wait until someone has time to take a look at it. In that waiting, I start something else. Then, on the morrow, at 9:34am, Tongai, the senior developer on the team has time to take a look at it. She calls me to her desk, and I start walking her through the code I wrote. She asks me why I chose that particular technique within the commit I made at 11:16am on the eve. I think, but the thoughts of the new thing I'm working on are consuming my mind. Eventually, I vaguely remember it was based on something I saw on StackOverflow. But can't really remember. It would've been so great if she asked me at 11:14 yesterday.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Deeper learning&lt;/strong&gt; &lt;br&gt;
+Software development learning happens more in the process than in the corrections of the outcome. If new insights and course corrections can be made during one's thinking, allowing one to apply and internalise that knowledge immediately, learning can be deeper. Also, when the reviewer is going through the code, they don't have time to think as deeply as you thought about it, and properly understand the context and reasoning compared to if they were part of the development process at the time. &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Awkward scrutiny&lt;/strong&gt; &lt;br&gt;
+Sometimes, while your review is being done, there is this awkward feeling of being a kid at school having your test marked in front of you by Mr. Qengwa. The same thing can happen while pairing, but there is this difference when someone is co-labouring with you, compared to when someone is reviewing post the fact. With one, co-building is the goal. With the other, despite it being constructive, the mood leans towards scrutiny.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now, all this doesn't take away from the fact that pairing is kinda hard. And the benefit is highly correlated to the personalities within the pair. Yet, despite this, I've still found that the technical learning one gets from pairing is deeper, and the emotional maturity and 'soft-skills' (which are really hard skills) that are developed to be more. There are numerous posts on &lt;em&gt;the cyber&lt;/em&gt; about pairing well, and mistakes to avoid making. I would recommend DuckDuckGo-ing them.&lt;/p&gt;</content:encoded></item><item><title>ECMA Specification Safari: Increment (and Decrement) Operators</title><description>&lt;p&gt;Recently, I’ve started reading through the ECMA Script (JavaScript) specification to get a more in depth understanding of the language I seem to be using every day. There are some interesting things I am coming across. Today’s interesting thing is increment and decrement operators.&lt;/p&gt;
+
+&lt;p&gt;There are two ways&lt;/p&gt;</description><link>http://localhost:2368/ecma-specification-safari-increment-and-decrement-operators/</link><guid isPermaLink="false">4715e193-2e58-4f3b-9430-6827855b9f33</guid><category>increment operator</category><category>javascript</category><dc:creator>Patrick Kayongo</dc:creator><pubDate>Tue, 10 May 2016 22:41:45 GMT</pubDate><content:encoded>&lt;p&gt;Recently, I’ve started reading through the ECMA Script (JavaScript) specification to get a more in depth understanding of the language I seem to be using every day. There are some interesting things I am coming across. Today’s interesting thing is increment and decrement operators.&lt;/p&gt;
+
+&lt;p&gt;There are two ways of incrementing a variable (decrementing the variable works in the same way): putting the increment operator before or after the variable.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var prefixIncrementVariable = "4" 
+var postfixIncrementVariable = "4" 
+++ prefixIncrementVariable // returns 5 
+postfixIncrementVariable ++ // returns 4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What both operators do is convert the variable into a number, and then increment the variable, changing the value of the variable to one plus the original value. The difference between the two is that the prefix increment notation returns the new value of the variable (5 in this case) as a result of the operation, while the postfix increment notation returns the old value of the variable (which is 4) as the result of the operation.&lt;/p&gt;
+
+&lt;p&gt;This sounds a bit confusing, but it highlights that the &lt;strong&gt;&lt;em&gt;effect&lt;/em&gt;&lt;/strong&gt; of an operation is not necessarily the &lt;strong&gt;&lt;em&gt;result&lt;/em&gt;&lt;/strong&gt; of the operation. One can think of it as in the case of a function call. The effect is whatever is done within the function. The result is whatever is returned by the function. Interesting.&lt;/p&gt;</content:encoded></item><item><title>What Is A Class (and why to avoid static methods)</title><description>&lt;p&gt;There are many debates in software development, from how to test, to languages, to frameworks, and everything under the sun. Despite my oblivion to the technical details of many of these debates, what I’ve seen is that many of them hover around the lofty heights of roof trusses without&lt;/p&gt;</description><link>http://localhost:2368/what-is-a-class-and-why-to-avoid-static-methods/</link><guid isPermaLink="false">7772252d-c5cd-4292-958d-05bee5830a57</guid><category>class</category><category>clean code</category><category>object-oriented</category><category>OO</category><category>OOP</category><category>static methods</category><dc:creator>Patrick Kayongo</dc:creator><pubDate>Mon, 02 Nov 2015 08:14:04 GMT</pubDate><content:encoded>&lt;p&gt;There are many debates in software development, from how to test, to languages, to frameworks, and everything under the sun. Despite my oblivion to the technical details of many of these debates, what I’ve seen is that many of them hover around the lofty heights of roof trusses without understanding the subterranean foundations that build the houses they are comparing (wow, that was poetic: +1500 hipster points).&lt;/p&gt;
+
+&lt;p&gt;In my short software development career thus far, I have been introduced to 2 paradigms of software development: procedural and object-oriented. And my understanding was that languages like SQL were procedural, and other languages like Java, C# or Python were object oriented, because you could create objects that interact with each other. Yet, over the past lil’ while, I’ve seen that the distinction between procedural and object-oriented is not necessarily the language that is being used, but the approach taken when using that language.&lt;/p&gt;
+
+&lt;p&gt;The foundation of object-oriented languages is the class, as these define the objects that interact with each other to fulfil some kind of intention. In his book Code Complete, Steven McConnell explains the concept of classes by introducing the idea of an ‘abstract data type’. He defines it as follows:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;An abstract data type is a collection of data and operations that work on that data. The operations both describe the data to the rest of the program and allow the rest of the program to change the data.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;He then mentions why he introduces abstract data types as a way of explaining classes:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Understanding ADTs is essential to understanding object-oriented programming. Without understanding ADTs, programmers create classes that are “classes” in name only – in reality, they are little more than convenient carrying cases for loosely related collections of data and routines.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Abstract data types can be implemented as classes. What is key is that it encapsulates data, and exposes operations that work on that data. Normally, these classes should represent some kind of real-world object, or a single entity or idea. A simple example would be the creation of a &lt;a href="http://martinfowler.com/bliki/ValueObject.html" title="Value Object"&gt;value object&lt;/a&gt; for money. In many applications, a decimal or related type is used to represent money, but this can be its own object:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Money 
+    attr_reader :amount 
+    attr_reader :currency 
+
+    def initialize(amount, currency) 
+        @amount = amount 
+        @currency = currency 
+    end 
+
+    def to_s 
+        return @currency.is_symbol_on_left ? "#{@currency.symbol} #{'%.02f' % @amount}" : "#{'%.02f' % @amount} #{@currency.symbol}" 
+    end 
+
+    def ==(other_object) 
+        return false if other_object.nil? 
+        return false if !other_object.is_a?(Money) 
+        return false if (other_object.amount != self.amount || other_object.currency != self.currency)   
+        return true 
+    end 
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above code is a “collection of data” (the amount and the currency) and “operations that work on that data” (getting the string value of the amount). In this way, the money object can be used throughout the application as a single concept and have repeatable results when other objects interact with it.&lt;/p&gt;
+
+&lt;p&gt;Now, where the whole ‘class’ thing sometimes go wrong is in the creation of ‘god objects’ (i.e. objects that do too many things) and static methods.&lt;/p&gt;
+
+&lt;p&gt;Now, in C#, an implementation of the above logic could be as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public static class MoneyManipulator 
+{ 
+    public static string GetCurrencyString(decimal amount, string currencySymbol, bool isSymbolOnLeft) 
+    { 
+        return isSymbolOnLeft ? string.Format("{0}{1}", currencySymbol, amount.ToString()) : string.Format("{0}{1}", amount.ToString(), currencySymbol); 
+    } 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As can be seen, the static method above does the same thing as what was written above with the Money object, but this isn’t an ‘object’ that other objects can interact with, but a piece of procedural code decorating itself in object-oriented language.  The method above isn’t a collection of data, as it doesn’t actually have any data (a similar pattern is found in many god objects). Therefore, there can’t be any operations on the data which it does not have.&lt;/p&gt;
+
+&lt;p&gt;Creating actual ‘objects’ makes the code a lot more reusable, extensible and understandable as the classes describe the data they encapsulate, instead of  the ‘I can be anything to anyone’ objects as above.&lt;/p&gt;</content:encoded></item><item><title>Why Are We Mocking Like This?</title><description>&lt;p&gt;People like labels that they can classify themselves under. It’s a nice way to have a club you can belong to, and an opposing club you can speak against. In political rhetoric here in South Africa, one group of people will feel complemented when calling them ‘capitalist’, whereas another&lt;/p&gt;</description><link>http://localhost:2368/why-are-we-mocking-like-this/</link><guid isPermaLink="false">ed58d0b1-2711-45a0-bda6-0cae7eaffaaf</guid><dc:creator>Patrick Kayongo</dc:creator><pubDate>Sun, 27 Sep 2015 14:10:31 GMT</pubDate><content:encoded>&lt;p&gt;People like labels that they can classify themselves under. It’s a nice way to have a club you can belong to, and an opposing club you can speak against. In political rhetoric here in South Africa, one group of people will feel complemented when calling them ‘capitalist’, whereas another will feel completely insulted. It’s the same with the term ‘socialist’. This phenomenon seems to also exist in the software development sub-genre of reality. Of late, I’ve been reading and discussing the tensions between the unit-testing practices of those who call themselves ‘mockists’ and others who call them classicists.&lt;/p&gt;
+
+&lt;p&gt;Martin Fowler has &lt;a href="http://martinfowler.com/articles/mocksArentStubs.html" title="Mocks Aren't Stubs - Martin Fowler"&gt;written an elaborate essay on the difference between the two approaches&lt;/a&gt;. I’d recommend reading it as it really explains the difference in unit testing strategy very well. In essence, mockists mock out the collaborators that a class uses when performing functions, so the ‘unit’ is just the class / method which is currently under test. On the other hand, classicists prefer to use concrete implementations of the collaborators, therefore the ‘unit’ under test is the class / method, and all the collaborators used to perform its function (except collaborators that are slow, such as databases or web service calls). Personally, I am more classicist leaning, but after conversations with colleagues, I have found that it is really a preference thing. Sometimes.&lt;/p&gt;
+
+&lt;p&gt;I want to present a case where mocking is a bad idea. Imagine, we have some kind of fixed investment account, where an individual deposits a lump sum, and earns a return after a number of years.&lt;/p&gt;
+
+&lt;p&gt;Our developer, Rumbi, starts with a calculator that is used to determine the future value of an investment. Because she is a good TDD practitioner, she starts with writing the test. For this example, I’ll be using Ruby with RSpec as the testing framework.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe FutureValueCalculator do 
+    it 'should calculate the correct future value with an amount of 1000, an interest rate of 10% and a term of 5 years' do 
+        futureValueCalculator = FutureValueCalculator.new 
+        futureValue = futureValueCalculator.calculateFutureValue(1000, 0.1, 5)   
+        expect(futureValue).to eq(1500) 
+    end 
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The test would fail, and to get the test to pass, here is her implementation of the FutureValueCalculator&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class FutureValueCalculator 
+    def calculateFutureValue(amount, interestRate, term) 
+        return amount * (1 + (interestRate * term)) 
+    end 
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Wonderful. Tests pass. Pomodoro timer sounds. Time for a break.&lt;/p&gt;
+
+&lt;p&gt;Next, she creates a simple investment that makes use of this. The simple investment has an interest rate of 20% and a fixed term of 10 years. She would like this simple investment object to let us know what the future value of the investment is. She writes the spec as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe SimpleInvestment do 
+    it 'should get the correct future value of the investment' do 
+        futureValueCalculator = double("FutureValueCalculator")   
+        allow(futureValueCalculator).to receive(:calculateFutureValue).with(5000, 0.2, 10).and_return(15000) 
+        simpleInvestment = SimpleInvestment.new(futureValueCalculator, 5000) 
+        expect(simpleInvestment.futureValue).to eq(15000) 
+    end 
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As can be seen above, the future value calculator is mocked. Her rationale for this is so that the class can be tested by itself, as the collaborators (the future value calculator) have already been tested in another test. Her implementation to make the above spec green looks like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class SimpleInvestment 
+    def initialize(futureValueCalculator, amount)   
+        @futureValueCalculator = futureValueCalculator 
+        @amount = amount @interestRate = 0.2 @loanTerm = 10 
+    end 
+
+    def futureValue 
+        return @futureValueCalculator.calculateFutureValue(@amount, @interestRate, @loanTerm) 
+    end 
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And the test goes green. Yay.&lt;/p&gt;
+
+&lt;p&gt;A few months go by, and a different developer, Kwame, joins. Kwame would like to add a new investment product, that uses compound interest. He takes a look at the future value calculator, and wonders why it has been implemented without compound interest. He neglects to look where else it is used, so he changes the spec to factor in compound interest:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe FutureValueCalculator do 
+    it 'should calculate the correct future value with an amount of 1000, an interest rate of 10% and a term of 5 years' do 
+        futureValueCalculator = FutureValueCalculator.new 
+        futureValue = futureValueCalculator.calculateFutureValue(1000, 0.1, 5) 
+        expect(futureValue).to eq(1610.51) 
+    end 
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The implementation of the calculator is then changed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class FutureValueCalculator def 
+    calculateFutureValue(amount, interestRate, term) 
+        return (amount * ((1 + interestRate)**term)).round(2) 
+    end 
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lastly, he adds the spec and implementation for his new Big Return Investment:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe BigReturnInvestment do 
+    it 'should return compounded interest at 7%' do 
+        futureValueCalculator = double("FutureValueCalculator") 
+        allow(futureValueCalculator).to receive(:calculateFutureValue).with(1000, 0.7, 10).and_return(1967.15) 
+        bigReturnInvestment = BigReturnInvestment.new(futureValueCalculator, 1000) 
+        expect(bigReturnInvestment.futureValue).to eq(1967.15) 
+    end 
+end
+
+class BigReturnInvestment def 
+    initialize(futureValueCalculator, amount) 
+        @futureValueCalculator = futureValueCalculator 
+        @amount = amount @interestRate = 0.7 @loanTerm = 10 
+    end 
+
+    def futureValue 
+        return @futureValueCalculator.calculateFutureValue(@amount, @interestRate, @loanTerm) 
+    end 
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Yay, all the tests have passed. We have a fully functioning application. Deploy to production! Except now, the original investment is kinda broken. And the tests are telling us that it is ok. Therefore, the tests are lying and aren’t picking up regression errors. Therefore the tests are useless.&lt;/p&gt;
+
+&lt;p&gt;The example I have used above is trivial, but I’ve seen the above being done in an Angular context, where business logic is in Angular services. When tests are written for the controllers, the services that hold the business logic are mocked, because it is assumed that tests have already been written for them. But then, changes to the services aren’t reflected in the controller tests, and, as has been seen above, regression errors can’t be picked up.&lt;/p&gt;
+
+&lt;p&gt;How do we fix this? Maybe try avoiding unnecessary mocking of logic. That may work. Unless ofcourse you are running away from possibly being labelled a ‘classicist’.&lt;/p&gt;</content:encoded></item><item><title>Broken Windows and Broken Code</title><description>&lt;p&gt;This week, I have been reading &lt;a href="http://gladwell.com/the-tipping-point/" title="The Tipping Point - Michael Gladwell"&gt;Tipping Point by Malcolm Gladwell&lt;/a&gt;. It talks about how large social movements happen, breaking it down into three things: the people involved, the stickiness of the message, and the context. In discussing the context, he introduces the &lt;a href="https://en.wikipedia.org/wiki/Broken_windows_theory" title="Broken Window Theory"&gt;Broken Window Theory &lt;/a&gt;by James Q. Wilson&lt;/p&gt;</description><link>http://localhost:2368/broken-windows-and-broken-code/</link><guid isPermaLink="false">179edf54-0b88-487e-9293-0e7a86930dff</guid><dc:creator>Patrick Kayongo</dc:creator><pubDate>Tue, 25 Aug 2015 18:13:23 GMT</pubDate><content:encoded>&lt;p&gt;This week, I have been reading &lt;a href="http://gladwell.com/the-tipping-point/" title="The Tipping Point - Michael Gladwell"&gt;Tipping Point by Malcolm Gladwell&lt;/a&gt;. It talks about how large social movements happen, breaking it down into three things: the people involved, the stickiness of the message, and the context. In discussing the context, he introduces the &lt;a href="https://en.wikipedia.org/wiki/Broken_windows_theory" title="Broken Window Theory"&gt;Broken Window Theory &lt;/a&gt;by James Q. Wilson and George L. Kelling, which explains how environment plays a big role in bringing about bad behaviour in individuals.&lt;/p&gt;
+
+&lt;p&gt;This is my simple understanding of it. In New York, in {{ some&lt;em&gt;date&lt;/em&gt;range&lt;em&gt;before&lt;/em&gt;1990 }}, there was a high crime rate. There was a policeman who had a bright idea. Instead of complex crime-fighting strategies, he decided to fix broken windows, remove graffiti from trains, and ensure that the environment was a nice environment. The rationale was that a nicer environment would bring about more responsible behaviour in individuals, because environment affects behaviour. * And it worked. Apparently.&lt;/p&gt;
+
+&lt;p&gt;Now there are many debates about whether this is true or not, and I am not smart enough to weigh in on those debates. But one thing I have seen in my short existence on this earth is that this rings true for an existing code base. You may be like me, an eager TDD wannabe zealot who wants to ensure that the project has 100% coverage; who wants to make sure the code has been refactored so that all the good principles bestowed by the judges of software development (or engineering, or programming, or science, or whatever) are adhered to. Then you get to a project where every one of those principles are broken.&lt;/p&gt;
+
+&lt;p&gt;You want to write tests, but you somehow lose the will to do so. Something deep inside of you wants to refactor, but there are no tests, and there is no will to write tests to ensure that the refactoring won’t break something. When writing new functionality, it is easier to say ‘just this once’ when doing something you’re not supposed to be doing because that’s how it has been done in the existing code base. And you don’t write tests for the new functionality, because hey, there aren’t tests here anyway.&lt;/p&gt;
+
+&lt;p&gt;Bad code can break good developers. And good developers can get into bad habits when working on bad code. Like writing more bad code. And increasing the chance of future good developers getting caught in this cycle. So how does one break the cycle?&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Write tests&lt;/strong&gt;.  How does one refactor to clean up the code if one can’t ensure that their refactoring won’t break something? By writing tests. What if the code is not testable? Then make it testable (which may possibly break something), then write tests. What if I don’t feel like writing tests? Then you are an EP a.k.a Enemy of Progress (if you don’t get that reference, then it wasn’t for you). &lt;a href="http://res.cloudinary.com/dpwjeam0o/image/upload/v1487004561/Gerrarrahe_gfb85s.jpg"&gt;&lt;img src="http://res.cloudinary.com/dpwjeam0o/image/upload/h_300,w_262/v1487004561/Gerrarrahe_gfb85s.jpg" alt="Gerrarrahe" title=""&gt;&lt;/a&gt;  &lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Write Clean Code.&lt;/strong&gt; ‘Just this one time’ is never this one time. There’s that &lt;a href="http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule" title="Boy Scout Rule"&gt;boy scout rule&lt;/a&gt; that some smart guy mentioned which says ‘leave the playground better than you found it’. Being a good developer is a habit, not an event, or a ‘skill’ on your LinkedIn profile which you have been endorsed for (who came up with that idea anyway?)&lt;a href="http://www.patkayongo.co.za/wp-content/uploads/2015/08/Traditional-Healer.jpg"&gt; &lt;br&gt;
+&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Incremental Improvements.&lt;/strong&gt; Improve one small thing today. Then a small thing tomorrow. Then a small thing the day after that. Then in a {{ undefined&lt;em&gt;time&lt;/em&gt;period }}, it will be looking so much better. And the world will be a happier place. Maybe. Kinda.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Do you have any stories working with old legacy code?&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;* This is an oversimplified explanation. Bing (or google, or duckduckgo) ‘Broken Window Theory’ for a better explanation.&lt;/em&gt;&lt;/p&gt;</content:encoded></item><item><title>Spock: Making Java Testing Groovy</title><description>&lt;p&gt;In my &lt;a href="http://www.patkayongo.co.za/2015/08/spring-field-vs-setter-vs-constructor-injection/" title="Spring Field vs Setter vs Constructor Injection"&gt;previous post&lt;/a&gt;, I alluded to how I was introduced to the Ruby cult some time ago. I decided to try out the language for myself. Now, being used to statically typed languages, I’m not really a fan of type enforcing only happening at run-time for languages such&lt;/p&gt;</description><link>http://localhost:2368/spock-making-java-testing-groovy/</link><guid isPermaLink="false">aba7e43d-247b-41c4-a4b4-185dd68022e3</guid><category>bdd</category><category>business-driven development</category><category>groovy</category><category>java</category><category>spock</category><category>tdd</category><category>test-driven development</category><category>testing</category><dc:creator>Patrick Kayongo</dc:creator><pubDate>Sun, 16 Aug 2015 14:02:57 GMT</pubDate><content:encoded>&lt;p&gt;In my &lt;a href="http://www.patkayongo.co.za/2015/08/spring-field-vs-setter-vs-constructor-injection/" title="Spring Field vs Setter vs Constructor Injection"&gt;previous post&lt;/a&gt;, I alluded to how I was introduced to the Ruby cult some time ago. I decided to try out the language for myself. Now, being used to statically typed languages, I’m not really a fan of type enforcing only happening at run-time for languages such as Ruby, JavaScript and Python. But one I really like about Ruby, similar to &lt;a href="http://www.patkayongo.co.za/2015/01/learning-python-and-testing-with-code-katas/" title="Learning Python and Testing with Code Katas"&gt;what I found about Python some time ago&lt;/a&gt;, is how human-readable it is, making understanding what the code does a lot easier. Groovy, a language that runs on the JVM also has this advantage to it, making it a useful tool in testing Java code.&lt;/p&gt;
+
+&lt;p&gt;People who are a lot smarter than me have mentioned that a value in testing is that it becomes a specification for what the actual code should do. The only way to actually know what an application does is by looking at the code, and a really good way to find out what it is &lt;em&gt;supposed to&lt;/em&gt; be doing is by looking at the tests (assuming tests have been written).&lt;/p&gt;
+
+&lt;p&gt;The difficulty with testing frameworks for statically typed languages such as Java and C# is that in many cases, the tests are hard to understand, making it difficult for someone who wants to know what the code is supposed to be doing. Firstly, it is not natural&lt;em&gt;to&lt;/em&gt;read&lt;em&gt;words&lt;/em&gt;written&lt;em&gt;like&lt;/em&gt;this and even if you can, suchMethodNamesCanOnlyBeSoLongBeforeTheyGetTiring. A second thing that makes tests difficult to understand is that many developers don’t mindfully follow a test structure. When writing code, the more natural structure for the developer writing the test is the arrange-act-assert structure, but when reading, the given-when-then structure is a lot simpler to understand. As said before, more time is spent reading code that has been written than actually writing it.&lt;/p&gt;
+
+&lt;p&gt;A few days ago, Zorodzayi Mukuya introduced me to the &lt;a href="http://www.spockframework.org" title="Spock Framework"&gt;Spock testing framework&lt;/a&gt;. Tests are written using the human-readable Groovy language, and because it runs on the JVM, these tests can be used to test Java code. I’ll go through a basic example of what it looks like, using an example of lending books to others, and recording this (especially for me who keeps forgetting who I lend books to).&lt;/p&gt;
+
+&lt;p&gt;Imagine you have a book class as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public class Book { 
+    private String isbn; 
+    private String title; 
+
+    public Book(String isbn, String title) { 
+        this.isbn = isbn; 
+        this.title = title; 
+    } 
+
+    public String getIsbn() { 
+        return isbn; 
+    } 
+
+    public String getTitle() { 
+        return title; 
+    } 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, I would like to add borrowing functionality to this class. So I will create a test that allows me to retrieve the current holder of the book. Using the Spock framework with the easy-to-read Groovy language, this may look like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;def "When a book is loaned, the current holder should be the borrower"() { 
+    given: "There is a book" 
+    def book = new Book("test-isbn", "Test Book Title") 
+
+    when: "The book is loaned" 
+    book.loanBook("Xolani Gwala") 
+
+    then: "The current holder should be the borrower"   
+    book.getCurrentHolder() == "Xolani Gwala" 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The test is defined in a normal speakable language format, making it easier to know what the code should be doing, as well as what it isn’t doing when the test fails. The ‘given’ block defines the pre-conditions for the action that is to be tested. The ‘when’ block describes the action undertaken. The ‘then’ block describes the expected result. Even a baby could understand this. Maybe not. But you get my point.&lt;/p&gt;
+
+&lt;p&gt;Now, the test would obviously fail because such a method doesn’t exist yet. To implement the method, and make the test pass, one can add the following method to the book class:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;private String borrower; 
+public void loanBook(String borrower) { 
+    this.borrower = borrower; 
+} 
+
+public String getCurrentHolder() { 
+    return this.borrower; 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Amazing! Now we know who holds the book. (Aside: If you’re reading this and you have my copy of Outliers by Malcolm Gladwell, please return it). When we have a book object, we might also want to know what the current status of the book is. So we could create and enum like the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public enum LoanStatus { IN_POSSESSION, LOANED }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and we could add a test to ensure that the status is LOANED when we borrow the book:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;def "When a book is loaned, the current status should be Loaned"() { 
+    given: 
+    def book = new Book("test-isbn", "Test Book Title") 
+
+    when: 
+    book.loanBook("Xolani Gwala") 
+
+    then: 
+    book.getCurrentStatus() == LoanStatus.LOANED 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As can be seen in the test above, the descriptors in the given, when and then blocks aren’t mandatory. In the first test example, they were a bit trivial. Therefore they can be used when the code in the blocks is a bit difficult to understand.&lt;/p&gt;
+
+&lt;p&gt;The test would fail, and the implementation to fix the test could look like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;private LoanStatus loanStatus; 
+private String borrower; 
+
+public void loanBook(String borrower) { 
+    this.borrower = borrower; 
+    this.loanStatus = LoanStatus.LOANED; 
+} 
+
+public LoanStatus getCurrentStatus() { 
+    return this.loanStatus; 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Awesome! Now what happens when someone returns the book? We could first write the tests as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;def "When a book is returned, the current status should be In Possession"() { 
+    given: 
+    def book = new Book("test-isbn", "Test Book Title") 
+    book.loanBook("Xolani Gwala") 
+
+    when: 
+    book.returnBook() 
+
+    then: 
+    book.getCurrentStatus() == LoanStatus.IN_POSSESSION 
+} 
+
+def "When a book is returned, the holder should be null"() { 
+    given: 
+    def book = new Book("test-isbn", "Test Book Title") 
+    book.loanBook("Xolani Gwala") 
+
+    when: 
+    book.returnBook() 
+
+    then: 
+    book.getCurrentHolder() == null 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And to implement the functionality to fix the failing test, add the following functionality to the Book class:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public void returnBook() { 
+    this.borrower = null; 
+    this.loanStatus = LoanStatus.IN_POSSESSION; 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Done. Easy. Simple. As can be seen, we have the statically typed nature of the Java language and all the advantages it brings for the production code. At the same time, we have the readability of the Groovy language and the Spock testing framework for the tests, making them much easier to understand and a simpler specification for the production code.&lt;/p&gt;</content:encoded></item><item><title>Spring Field vs Setter vs Constructor Injection</title><description>&lt;p&gt;Lately, I have been immersed in the world of Java and its various frameworks, tools and language features. I’ve also recently discovered that Java is not cool. I found myself at a gathering of developers some time ago, where they attempted to proselytise me into the ruby &lt;del&gt;cult&lt;/del&gt; family.&lt;/p&gt;</description><link>http://localhost:2368/spring-field-vs-setter-vs-constructor-injection/</link><guid isPermaLink="false">6042cc09-61c0-454c-8f18-176e1ea59668</guid><category>dependency injection</category><category>inversion of control</category><category>ioc</category><category>java</category><category>spring</category><dc:creator>Patrick Kayongo</dc:creator><pubDate>Fri, 14 Aug 2015 08:52:02 GMT</pubDate><content:encoded>&lt;p&gt;Lately, I have been immersed in the world of Java and its various frameworks, tools and language features. I’ve also recently discovered that Java is not cool. I found myself at a gathering of developers some time ago, where they attempted to proselytise me into the ruby &lt;del&gt;cult&lt;/del&gt; family. Unfortunately, since puberty, I have had trouble growing enough facial hair to be seen as ‘one of them’.&lt;/p&gt;
+
+&lt;p&gt;In this Java world, it seems that the Spring framework is king for large applications. And their IoC container is very useful for inserting dependencies into classes where they are needed. Currently, there seem to be 2 ways of mapping interfaces to their desired implementations: an xml configuration file, and using annotations in the classes.&lt;/p&gt;
+
+&lt;p&gt;Personally, I’m not a fan of either, but I’m REALLY not a fan of the XML configuration. The classes that require the dependencies are cleaner, but if a class name were to change, or the properties were to change, one has to remember to update the XML files with the updated dependencies. I find this cumbersome. Others may disagree.&lt;/p&gt;
+
+&lt;p&gt;The other option is the annotations. This way, the Spring framework automagically finds the implementation of a dependency based on an annotation. For example, if one has a book repository interface it may look something like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public interface BookRepository { 
+    List&amp;lt;Book&amp;gt; findAllBooks(); 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The implementation of that interface may look like this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@Component 
+public class BookRepositoryImpl implements BookRepository { 
+
+    @Override 
+    public List&amp;lt;Book&amp;gt; findAllBooks() { 
+        List&amp;lt;Book&amp;gt; books = new ArrayList&amp;lt;&amp;gt;(); 
+        books.add(new Book()); 
+        books.add(new Book()); 
+        return books; 
+    } 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The @Component annotation before the class declaration tells Spring that this class is a candidate for injection when dependencies are automagically configured.&lt;/p&gt;
+
+&lt;p&gt;To use this in another class, the @Autowire annotation is used, to let Spring know that this dependency should be injected by Spring. There are three ways to do it.&lt;/p&gt;
+
+&lt;p&gt;Field injection looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public class BookFinder { 
+
+    @Autowire 
+    private BookRepository bookRepository; 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The annotation above the private field within the BookFinder class will let Spring know that the bookRepository field dependency should be injected somehow.&lt;/p&gt;
+
+&lt;p&gt;Setter injection looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public class BookFinder { 
+    private BookRepository bookRepository; 
+
+    @Autowire 
+    @Required 
+    public setBookRepository(BookRepository bookRepository) { 
+        this.bookRepository = bookRepository; 
+    } 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the example above, the BookRepository dependency will be injected through the setter (configured to do so by the @Autowire annotation above the setter). The @Required annotation tells the configuration that it is mandatory, and will therefore be injected when the class is initialised.&lt;/p&gt;
+
+&lt;p&gt;Lastly, there is constructor injection which looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public class BookFinder { 
+    private BookRepository bookRepository; 
+
+    @Autowire public BookFinder(BookRepository bookRepository) { 
+        this.bookRepository = bookRepository; 
+    } 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here, the dependency is passed through the constructor when the class is initialised (configured by the @Autowire attribute above the constructor).&lt;/p&gt;
+
+&lt;p&gt;Now the @Autowire annotation is not ideal because now every class is tightly coupled to the Spring framework. Which is not ideal. But it will have to work for now. But which form of injection is best? In my opinion – constructor injection. Why? Because more time is spent reading the code we write than actually writing the code, and therefore clarity should be first prize before perceived immediate efficiency.&lt;/p&gt;
+
+&lt;p&gt;The field injection method doesn’t show that the class has dependencies. It has private fields. And an @Autowire attribute to make someone familiar with the Spring IoC container know that those private fields are dependencies which are injected in. This makes the class harder to understand. It is also harder to test because one is now dependant on testing libraries and frameworks that automagically inject mocks and stubs as dependencies. This results in frustrated people trying to understand it to make modifications. This doesn’t contribute to world peace.&lt;/p&gt;
+
+&lt;p&gt;Setter injection seems to be the method preferred by the writers of the &lt;a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html" title="Spring IoC Container Documentation"&gt;Spring IoC Container documentation&lt;/a&gt;. At least here it explicitly shows that the dependencies are injected into the class. But it isn’t explicitly clear that all these dependencies are required by the class. Therefore, when writing tests, and passing dependencies into the class, or using the class’ interface from another class, one has to be aware of the internal workings of the class. This is also not ideal.&lt;/p&gt;
+
+&lt;p&gt;Constructor injection makes all the dependencies a class requires explicit. This makes a class ‘complete’ when it is created. This also makes a class easier to test. Some posts on the &lt;em&gt;internets&lt;/em&gt; have said that if a class has many dependencies, the list of constructor arguments become too large. But other posts on the &lt;em&gt;internets&lt;/em&gt; (which I agree with) have said that if your class has too many dependencies, then maybe your&lt;a href="http://www.javacodegeeks.com/2014/02/the-single-responsibility-principle.html" title="Single Responsibility Principle"&gt; class does too much&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I think I have written too much. Thoughts? Agree? Disagree?&lt;/p&gt;</content:encoded></item><item><title>Simple Applications Change The World</title><description>&lt;p&gt;When someone dreams of being a ‘software developer’ or ‘programmer’ (or whatever the other ill-defined terms are for someone who creates software), they imagine someone highly intelligent someone solving complex algorithms that will solve the {{ world.generateRandomProblem() }} crisis for humanity and make this world a better place. At least that’&lt;/p&gt;</description><link>http://localhost:2368/simple-applications-change-the-world/</link><guid isPermaLink="false">b581de13-76e2-46bc-8e1c-da7d921a0998</guid><dc:creator>Patrick Kayongo</dc:creator><pubDate>Wed, 29 Jul 2015 19:00:37 GMT</pubDate><media:content url="http://res.cloudinary.com/dpwjeam0o/image/upload/v1487004563/5579591060_25561f0d6e_b_jhfkwh.jpg" medium="image"/><content:encoded>&lt;img src="http://res.cloudinary.com/dpwjeam0o/image/upload/v1487004563/5579591060_25561f0d6e_b_jhfkwh.jpg" alt="Simple Applications Change The World"&gt;&lt;p&gt;When someone dreams of being a ‘software developer’ or ‘programmer’ (or whatever the other ill-defined terms are for someone who creates software), they imagine someone highly intelligent someone solving complex algorithms that will solve the {{ world.generateRandomProblem() }} crisis for humanity and make this world a better place. At least that’s what I thought.&lt;/p&gt;
+
+&lt;p&gt;Not everyone is a ‘change-the-world’ kinda guy, but I’ve found myself to be one. Whether I found myself walking the busy corporate streets of Johannesburg, visiting family in Uganda or being transported into a place I’ve never been through a book I’m reading, I can’t help but think of ideas of how things can be done better with the skillset I have. And most of these ideas are simple applications that create and store information, and display processed information for simplicity.&lt;/p&gt;
+
+&lt;p&gt;Think about it. All the ‘amazing’ innovations in web technology over the past few years have been simple applications. Facebook started as an application where someone signs up, makes posts, and makes friends with other people. This has obviously increased in complexity, but it must have started off with a few database tables, a web interface and something in the middle. The same thing applies to Instagram. WhatsApp just sends messages between devices. This all isn’t overly complex. Yet they have completely changed the way we live our lives.&lt;/p&gt;
+
+&lt;p&gt;Maybe, if more people spent time looking for simple easy solutions to everyday challenges, and build on top of those, this country (South Africa), this continent and this world could be so much more advanced.&lt;/p&gt;
+
+&lt;p&gt;Here are some simple ideas. These may be dumb ideas. And there may be an infinite number of reasons why they can’t work. But they are ideas.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;In rural places, where the aren’t defined municipal addresses, someone could start a ‘verification agency’ which stores addresses based on GPS co-ordinates. Find a way to make money off this.&lt;/li&gt;
+&lt;li&gt;Create a user-generated database for African language song lyrics. Similar to rap genius. Have a way to buy the music from the site, where the producer can set the price for their digital content (instead of other sites where they determine the price for you).&lt;/li&gt;
+&lt;li&gt;Have a site which is a user-generated directory of shops, businesses and service-providers within geographical locations. Users can write reviews, give recommendations etc. Businesses can take ‘ownership’ of the pages and sell products and give promotions on their ‘page’.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Those are some simple ideas off the top of my head. Like I said, there may be millions of reasons why they can’t / won’t work. There may also be one reason why they could.&lt;/p&gt;
+
+&lt;p&gt;Do you have any ideas?&lt;/p&gt;</content:encoded></item><item><title>TDD Research</title><description>&lt;p&gt;As part of my masters programme at the University of Cape Town, I’m trying to understand why people practice TDD. If you’re able to assist me in this, please complete the following survey: &lt;a href="http://research.patkayongo.co.za/" title="TDD Research"&gt;http://research.patkayongo.co.za/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;If you would like information about the results of the&lt;/p&gt;</description><link>http://localhost:2368/tdd-research/</link><guid isPermaLink="false">27f3fc76-d627-4337-bfa3-0f0a5d676704</guid><dc:creator>Patrick Kayongo</dc:creator><pubDate>Sun, 05 Jul 2015 21:27:15 GMT</pubDate><content:encoded>&lt;p&gt;As part of my masters programme at the University of Cape Town, I’m trying to understand why people practice TDD. If you’re able to assist me in this, please complete the following survey: &lt;a href="http://research.patkayongo.co.za/" title="TDD Research"&gt;http://research.patkayongo.co.za/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;If you would like information about the results of the survey, please email me at research@patkayongo.co.za&lt;/p&gt;</content:encoded></item><item><title>The Danger with Frameworks</title><description>&lt;p&gt;For the past 2 weeks, I have been delving into the magical world of AngularJS and single page applications. This is how the internet should be. Increased processing speeds and more memory have allowed the browser to process a lot more than what was previously feasible, allowing for a much&lt;/p&gt;</description><link>http://localhost:2368/the-danger-frameworks/</link><guid isPermaLink="false">fcc32186-6784-4fae-8ed9-89de8fdfac52</guid><dc:creator>Patrick Kayongo</dc:creator><pubDate>Thu, 14 May 2015 21:25:27 GMT</pubDate><content:encoded>&lt;p&gt;For the past 2 weeks, I have been delving into the magical world of AngularJS and single page applications. This is how the internet should be. Increased processing speeds and more memory have allowed the browser to process a lot more than what was previously feasible, allowing for a much better experience for the user.&lt;/p&gt;
+
+&lt;p&gt;Once one understands the main components of the Angular framework and how they fit together, creating an application isn’t too difficult. For smaller applications, it’s a lot easier. For larger applications, the learning curve may get steep. But it’s still made it so much easier to do what would take forever to do without the framework. And this may be part of the problem.&lt;/p&gt;
+
+&lt;p&gt;When one uses the framework (or any other framework such as ASP.Net, Spring, Django, Rails, etc), the developer can become really good at the framework, but may forego understanding on the layers that the framework abstract. So someone can put together an ASP.Net MVC project in a few minutes, but be completely oblivious to how a web request is handled by IIS (or possible Linux these days), and handled by the application. Someone can use Hibernate to abstract connections to the database, but be completely oblivious of the underlying mechanisms the application uses to connect to the database. And this leads to enslavement to the framework.&lt;/p&gt;
+
+&lt;p&gt;Imagine an ASP.Net WebForms (or JSP) developer from 10 years ago. Let’s call him Farai. He knows how to create massive web applications with the tools he has been given. ListViews. GridViews. Repeaters. TextBoxes. Update panels. He becomes really good at creating WebForms applications. He is promoted to senior developer in his organisation. Then ASP.Net MVC comes along. He feels threatened because this is a completely new way of doing things. He has to start from scratch. He advises his company against using the new technology, giving the appearance of prudence. Then single page applications come along with frameworks such as Knockout and Angular. His company and clients are wondering how to make their application look and feel like the other modern applications. He can’t adapt. He gets frustrated.&lt;/p&gt;
+
+&lt;p&gt;On the other hand, meet Thandi. She started off as an ASP.Net WebForms developer. She started off her career creating applications with WebForms. She also chose to dig deeper and understand the layers the WebForms framework abstracts. Then ASP.Net MVC comes along. Because she understands the underlying framework, she can see that it was built on top of the same framework as WebForms, and therefore shares many similarities. When asked whether to choose one or the other, she makes an informed decision, rather than one just trying to protect herself. When the client side frameworks come along, she gets excited about what they can do. She understands how the web works.&lt;/p&gt;
+
+&lt;p&gt;Farai’s story is one that is common for many developers. Enslaved by the framework. For adaptability and understanding, it pays a little more to dig a little deeper. Be like Thandi.&lt;/p&gt;</content:encoded></item><item><title>New City. New Job.</title><description>&lt;p&gt;At the beginning of this month, I moved to Johannesburg, and started working at ThoughtWorks. It has been an amazing 2 weeks thus far. Challenging. Learning a lot. Inspired to grow.&lt;/p&gt;</description><link>http://localhost:2368/new-city-new-job/</link><guid isPermaLink="false">13c546fb-bbb7-42a6-9c96-d81cbea13385</guid><dc:creator>Patrick Kayongo</dc:creator><pubDate>Thu, 14 May 2015 20:57:15 GMT</pubDate><content:encoded>&lt;p&gt;At the beginning of this month, I moved to Johannesburg, and started working at ThoughtWorks. It has been an amazing 2 weeks thus far. Challenging. Learning a lot. Inspired to grow.&lt;/p&gt;</content:encoded></item><item><title>Interface Segregation and Objective C Delegates</title><description>&lt;p&gt;The fourth principle of the SOLID principles is the Interface Segregation Principle. According to Wikipedia, the authority on most truth, this principle states that “no client should be forced to depend on methods it does not use”. This principle can help in cleaner and more intuitive designs of protocols and&lt;/p&gt;</description><link>http://localhost:2368/interface-segregation-and-objective-c-delegates/</link><guid isPermaLink="false">ac48e2b1-6383-4619-adb3-1b8effceab9b</guid><category>clean code</category><category>delegate</category><category>interface segregation</category><category>interface segregation principle</category><category>Objective-C</category><category>protocol</category><category>solid</category><dc:creator>Patrick Kayongo</dc:creator><pubDate>Wed, 18 Feb 2015 16:03:59 GMT</pubDate><content:encoded>&lt;p&gt;The fourth principle of the SOLID principles is the Interface Segregation Principle. According to Wikipedia, the authority on most truth, this principle states that “no client should be forced to depend on methods it does not use”. This principle can help in cleaner and more intuitive designs of protocols and delegates.Most Objective C introductory tutorials introduce developers to the idea of delegates. For example, if you have a table view controller and table view cells, the table view cells can send messages to the table view controller using a delegate.&lt;/p&gt;
+
+&lt;p&gt;The definition for the table view cell could look something like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@protocol MyTableViewCellDelegate &amp;lt;NSObject&amp;gt; 
+    - (void)doSomething; 
+@end 
+
+@interface MyTableViewCell : UITableViewCell 
+@property (nonatomic, weak) id&amp;lt;MyTableViewCellDelegate&amp;gt; delegate; 
+@end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And the definition of the table view controller could look something like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@interface MyTableViewController : UITableViewController &amp;lt;MyTableViewCellDelegate&amp;gt; 
+@end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the implementation of the table view controller, when dequeuing the cell and setting it up, the delegate of the cell should be set to the table view controller.&lt;/p&gt;
+
+&lt;p&gt;For a simple example like this, this is ok. But as the application gets more complicated, the delegate definition can get more complicated. For example, if the table view cell manages individual audio, video and other text items, the protocol definition of the delegate could end up looking as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@protocol MyTableViewCellDelegate 
+- (void)addAudioItem:(AudioItem *)audioItem; 
+- (void)showAudioItem:(AudioItem *)audioItem; 
+- (void)deleteAudioItem:(AudioItem *)audioItem; 
+
+- (void)addPhotoItem:(PhotoItem *)photoItem; 
+- (void)showPhotoItem:(PhotoItem *)photoItem; 
+- (void)deletePhotoItem:(PhotoItem *)photoItem; 
+@end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This can get confusing with added complexity. In addition to this, the cell may be used in another context that doesn’t have either audio or photo items, forcing the class that implements the protocol (the view controller in this case) to implement methods it doesn’t require.&lt;/p&gt;
+
+&lt;p&gt;To simplify this, the protocol can be broken down into smaller protocols, as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@protocol AudioItemHandler 
+- (void)addAudioItem:(AudioItem *)audioItem; 
+- (void)showAudioItem:(AudioItem *)audioItem; 
+- (void)deleteAudioItem:(AudioItem *)audioItem; 
+@end 
+
+@protocol PhotoItemHandler 
+- (void)addPhotoItem:(PhotoItem *)photoItem; 
+- (void)showPhotoItem:(PhotoItem *)photoItem; 
+- (void)deletePhotoItem:(PhotoItem *)photoItem; 
+@end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The table view cell can then reference both of these items as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@interface MyTableViewCell : UITableViewCell 
+@property (nonatomic, weak) id&amp;lt;AudioItemHandler&amp;gt; audioItemHandler; 
+@property (nonatomic, weak) id&amp;lt;PhotoItemHandler&amp;gt; photoItemHandler;
+@end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And lastly, the class that implemented the delegate protocol now implements both of the smaller protocols:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@interface MyTableViewController : UITableViewController &amp;lt;AudioItemHandler, PhotoItemHandler&amp;gt; 
+@end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This way, the protocols can be used separately and aren’t bound to be used together, increasing the flexibility. In addition to this, each responsibility can then be handled by different objects.&lt;/p&gt;</content:encoded></item></channel></rss>

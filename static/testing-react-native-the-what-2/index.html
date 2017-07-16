@@ -1,0 +1,280 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Testing React (&amp; Native) Components</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=36acbe3795">
+
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Pat Kayongo's Software Development Blog">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Testing React (&amp; Native) Components">
+    <meta property="og:description" content="React is big. Really big. It is the web framework that you need to be doing right now. It was the Ruby on Rails of 2016. You had to be doing it with a double mocha. And a beard. And a comb-over. Unless you're black. Or a woman. Or sane.">
+    <meta property="og:url" content="http://localhost:2368/testing-react-native-the-what-2/">
+    <meta property="article:published_time" content="2017-02-21T18:03:45.000Z">
+    <meta property="article:modified_time" content="2017-03-08T11:15:59.000Z">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Testing React (&amp; Native) Components">
+    <meta name="twitter:description" content="React is big. Really big. It is the web framework that you need to be doing right now. It was the Ruby on Rails of 2016. You had to be doing it with a double mocha. And a beard. And a comb-over. Unless you're black. Or a woman. Or sane.">
+    <meta name="twitter:url" content="http://localhost:2368/testing-react-native-the-what-2/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Patrick Kayongo">
+    <meta name="twitter:site" content="@patkayongo">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Pat Kayongo&#x27;s Software Development Blog",
+        "logo": "http://localhost:2368/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Patrick Kayongo",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "http://localhost:2368/author/patrick/",
+        "sameAs": []
+    },
+    "headline": "Testing React (&amp; Native) Components",
+    "url": "http://localhost:2368/testing-react-native-the-what-2/",
+    "datePublished": "2017-02-21T18:03:45.000Z",
+    "dateModified": "2017-03-08T11:15:59.000Z",
+    "description": "React is big. Really big. It is the web framework that you need to be doing right now. It was the Ruby on Rails of 2016. You had to be doing it with a double mocha. And a beard. And a comb-over. Unless you&#x27;re black. Or a woman. Or sane.",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Pat Kayongo's Software Development Blog" href="../rss/index.html">
+</head>
+<body class="post-template nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="index.html#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home"><a href="../">Home</a></li>
+    </ul>
+        <a class="subscribe-button icon-feed" href="../rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button icon-menu" href="index.html#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post">
+
+        <header class="post-header">
+            <h1 class="post-title">Testing React (&amp; Native) Components</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2017-02-21">21 February 2017</time> 
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>React is big. Really big. It is the web framework that you need to be doing right now. It was the Ruby on Rails of 2016. You had to be doing it with a double mocha. And a beard. And a comb-over. Unless you're black. Or a woman. Or sane. Then maybe not a comb-over.</p>
+
+<p>The component based approach of React is really great. The idea of building these small components that do one thing, and do it well, and using these as building blocks of a larger app. Really good principles. Single Responsibility or something like that.</p>
+
+<p>Also, the combination of layout (the JSX) and the JavaScript logic behind it is an interesting approach. At first, I was kinda against it, because we have been indoctrinated into not doing this for a really long time. Yet, I read somewhere that such a separation is superficial, because the JavaScript actually directly affects the layout components, making them part of the same thing. And a rule of thumb is "the things that change together should stay together".</p>
+
+<p>Now, if you have these independent components, that are the building blocks of your application, the question is what do these components do? And by implication, what does one test?</p>
+
+<p>Aside: why test? Because it's good for designing your code in a simple, modular way. It also allows for picking up regression bugs if someone else makes changes and introduces defects, thereby giving a team more confidence to make changes. More confidence means the team can respond to changes quicker, thereby making the team more 'agile' (is that still a thing?).</p>
+
+<p>Whenever one is testing a module (generic <em>trying-to-sound-clever</em> word for a 'thing'), one tests that:</p>
+
+<ol>
+<li>Given an input, or a condition  </li>
+<li>When I do a certain action  </li>
+<li>Then what is the output, or result</li>
+</ol>
+
+<p>In a React component, there are 2 inputs (I can think of right now) to a component:</p>
+
+<ul>
+<li>Props passed into the component</li>
+<li>Results from an outside call (e.g. a network call)</li>
+</ul>
+
+<p>There are 2 kinds of actions that can take place:</p>
+
+<ul>
+<li>The creation and mounting of the component</li>
+<li>An event that takes place on one of the child components (e.g. a button is pressed)</li>
+</ul>
+
+<p>Lastly, there are 4 kinds of outputs, or results from a react component:</p>
+
+<ul>
+<li>Rendered child components</li>
+<li>Events that are emitted (e.g. onActionHappened)</li>
+<li>Network calls are made</li>
+<li>Messages sent to overarching controlling components, such as a navigator in React Native.</li>
+</ul>
+
+<p>So, when writing a test for the functionality of a component, one would start with the inputs. In these example, I will be using the enzyme library from Airbnb to return a shallow render of the component. This calls the <code>render</code> function of the specified component to test the output, but does not render the child components within the component under test. </p>
+
+<pre><code class="language-javascript">import { shallow } from 'enzyme';  
+import MyComponent from './my-component';
+
+describe('when I give "Mpho" as a name', () =&gt; {  
+    const myComponent = shallow(&lt;MyComponent name="Mpho" /&gt;)
+});
+</code></pre>
+
+<p>This could also be a result of a network request, in which case you could stub out whichever library you are using for the requests (e.g. fetch-everywhere or xhr), and return a pre-defined result.</p>
+
+<p>From here, one would then go to the action, and then test the result of the action. Such an action could be creation of the component:</p>
+
+<pre><code class="language-javascript">describe('when I give "Mpho" as a name', () =&gt; {  
+    it('should display the name in a text field', () =&gt; {
+        const myComponent = shallow(&lt;MyComponent name="Mpho" /&gt;);
+        expect(myComponent.containsMatchingElement(&lt;Text&gt;{'Mpho'}&lt;/Text&gt;)).toEqual(true);
+    });
+});
+</code></pre>
+
+<p>If the action is an event from a child component, e.g. a button press, the output could be tested as follows:</p>
+
+<pre><code class="language-javascript">describe('when I give "Mpho" as a name', () =&gt; {  
+    it('should display the name in a text field', () =&gt; {
+        const myComponent = shallow(&lt;MyComponent name="Mpho" /&gt;);
+        myComponent.find(TouchableOpacity).simulate('press');
+        expect(myComponent.containsMatchingElement(&lt;Text&gt;{'Mpho'}&lt;/Text&gt;)).toEqual(true);
+    });
+});
+</code></pre>
+
+<p>As mentioned earlier, the output could be rendered components, as tested above; or network requests, which could be tested by spying on whichever network library is used; or events emitted, which could be tested by spying on the handler function passed in as properties of the component under test. Sinon is a great library for creating spies and stubs.</p>
+
+<pre><code class="language-javascript">import sinon from 'sinon';  
+const actionHandler = sinon.spy();  
+const myComponent = shallow(&lt;MyComponent name="Mpho" onActionHappened={actionHandler} /&gt;);
+</code></pre>
+
+<p>One of the concerns I had when testing components was that the implementation is closely tied to the tests (i.e. if one changes from a TouchableOpacity to a TouchableHighlight, then the tests have to change). But because, as discussed earlier, the component logic (written in JavaScript) is so closely tied to it's layout (the JSX), so by design, the functionality (logic) cannot and should not be separated from the specific implementation. The rendered layout is a valid external output (and not internal implementation), and if this external output changes, the tests should change to reflect this.</p>
+
+<p>A way in which to avoid closely tying the tests to implementation would be to avoid testing for <em>internal</em> changes and function calls. This includes effects on the state of the object. (I say internal with caution because though these are externally accessible, they are only for internal use). One should also try (as far as possible) to avoid testing for the calling of <em>internal</em> methods of the component. How these methods and state properties are set and called are subject to change. For example, one may decide that they do not want to use state for values that will not change, and set class level variables (e.g. <code>this.myVariable = 'value'</code>). This will not change the output of the component, and therefore tests should still pass unchanged.</p>
+
+<p>This becomes tricky when there is asynchronicity involved as a test normally completes before the asynchronous code has run. In the previous example, if the <em>press</em> action resulted in an asynchronous function call, the assertion would happen before the result of the call. To overcome this, we may need to call a class function as follows:</p>
+
+<pre><code class="language-javascript">describe('when I give "Mpho" as a name', (done) =&gt; {  
+    it('should display the name in a text field', () =&gt; {
+        const myComponent = shallow(&lt;MyComponent name="Mpho" /&gt;);
+        myComponent.instance().handleButtonPress().then(() =&gt; {
+            expect(myComponent.containsMatchingElement(&lt;Text&gt;{'Mpho'}&lt;/Text&gt;)).toEqual(true);
+            done();
+        }); 
+    });
+});
+</code></pre>
+
+<p>It's ugly I know. And the test is tied too close to the implementation. If you can think of a better way, please suggest.</p>
+
+<p>A second concern that has been raised is that the tests are too simple, and do not test the wider business logic. I think that's the nature of unit tests. Complementary acceptance and integration tests are needed to have more confidence in the code base. And one may ask, why not have acceptance tests only? And another may answer, because there are a limited number of per-component (or per-unit) scenarios that can be tested with those higher level tests, leaving some parts of the code base untested, reducing the confidence on has in the code base. But many people around the world, a lot smarter than me, are arguing about this. So one can seek their wisdom.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/patrick/" style="background-image: url(http://www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s&amp;)"><span class="hidden">Patrick Kayongo's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/patrick/">Patrick Kayongo</a></h4>
+
+                    <p>Read <a href="../author/patrick/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Testing%20React%20(%26%20Native)%20Components&amp;url=http://localhost:2368/testing-react-native-the-what-2/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/testing-react-native-the-what-2/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://localhost:2368/testing-react-native-the-what-2/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+    </article>
+</main>
+
+<aside class="read-next">
+    <a class="read-next-story no-cover" href="../en-courage-ment/">
+        <section class="post">
+            <h2>En-courage-ment</h2>
+            <p>Software development is hard. And getting good at it is even harder. One regularly reads about the latest and…</p>
+        </section>
+    </a>
+    <a class="read-next-story prev no-cover" href="../pairing-vs-pull-request-reviews/">
+        <section class="post">
+            <h2>Pairing vs Pull Request Reviews</h2>
+            <p>Some like them. Some hate them. But code reviews are a good thing. Some may think they are demigods…</p>
+        </section>
+    </a>
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="../">Pat Kayongo's Software Development Blog</a> © 2017</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=36acbe3795"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=36acbe3795"></script>
+
+</body>

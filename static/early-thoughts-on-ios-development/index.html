@@ -1,0 +1,199 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Early Thoughts on iOS Development</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=36acbe3795">
+
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Pat Kayongo's Software Development Blog">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Early Thoughts on iOS Development">
+    <meta property="og:description" content="Recently, I started developing iOS applications for work. It’s an interesting experience, especially because I once vowed never to do iOS development due to my love-hate relationship with Apple. But the opportunity came up, and the diversity of experience can only be good experience. So here are my thoughts">
+    <meta property="og:url" content="http://localhost:2368/early-thoughts-on-ios-development/">
+    <meta property="article:published_time" content="2014-08-18T06:08:01.000Z">
+    <meta property="article:modified_time" content="2014-08-18T10:38:37.000Z">
+    <meta property="article:tag" content="iOS">
+    <meta property="article:tag" content="Objective-C">
+    <meta property="article:tag" content="XCode">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Early Thoughts on iOS Development">
+    <meta name="twitter:description" content="Recently, I started developing iOS applications for work. It’s an interesting experience, especially because I once vowed never to do iOS development due to my love-hate relationship with Apple. But the opportunity came up, and the diversity of experience can only be good experience. So here are my thoughts">
+    <meta name="twitter:url" content="http://localhost:2368/early-thoughts-on-ios-development/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Patrick Kayongo">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="iOS, Objective-C, XCode">
+    <meta name="twitter:site" content="@patkayongo">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Pat Kayongo&#x27;s Software Development Blog",
+        "logo": "http://localhost:2368/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Patrick Kayongo",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "http://localhost:2368/author/patrick/",
+        "sameAs": []
+    },
+    "headline": "Early Thoughts on iOS Development",
+    "url": "http://localhost:2368/early-thoughts-on-ios-development/",
+    "datePublished": "2014-08-18T06:08:01.000Z",
+    "dateModified": "2014-08-18T10:38:37.000Z",
+    "keywords": "iOS, Objective-C, XCode",
+    "description": "Recently, I started developing iOS applications for work. It’s an interesting experience, especially because I once vowed never to do iOS development due to my love-hate relationship with Apple. But the opportunity came up, and the diversity of experience can only be good experience. So here are my thoughts",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Pat Kayongo's Software Development Blog" href="../rss/index.html">
+</head>
+<body class="post-template tag-ios tag-objective-c tag-xcode nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="index.html#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home"><a href="../">Home</a></li>
+    </ul>
+        <a class="subscribe-button icon-feed" href="../rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button icon-menu" href="index.html#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-ios tag-objective-c tag-xcode">
+
+        <header class="post-header">
+            <h1 class="post-title">Early Thoughts on iOS Development</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2014-08-18">18 August 2014</time>  on <a href="../tag/ios/">iOS</a>, <a href="../tag/objective-c/">Objective-C</a>, <a href="../tag/xcode/">XCode</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>Recently, I started developing iOS applications for work. It’s an interesting experience, especially because I once vowed never to do iOS development due to my love-hate relationship with Apple. But the opportunity came up, and the diversity of experience can only be good experience. So here are my thoughts on the past few weeks:</p>
+
+<ol>
+<li>It requires a change in paradigm from what I’m used to. The way a system is designed in .Net, i.e. the different classes, interfaces, base classes and design patterns that may be used will be different because they have different approaches. Sure iOS app development is based on the foundation of the common MVC design pattern, but there are differences in the way the application responds to events, handles user inputs, saves data, etc. There are many new concepts, such as delegates, which are not prevalent in .Net development. I’m still learning ‘best practices’ in terms of design.  </li>
+<li>The names of things aren’t the same. Firstly, every class has a header and an implementation file. Some people don’t like this. I kinda liked the separation of what a class does internally and how it interfaces with others. Also, initially I thought protocols in Objective-C are synonymous with interfaces in .Net development, but they aren’t necessarily. They don’t always have the same uses.  </li>
+<li>Like .Net, it’s best to stand on the shoulders of others. Just like Entity Framework abstracts interactions with the database in .Net, there is really no need to create your own frameworks and libraries for what others have done already. <a href="https://github.com/magicalpanda/MagicalRecord" title="Magical Record">Magical Record</a> is really good for accessing and manipulating Core Data. <a href="http://restkit.org/" title="RestKit">RestKit</a> is a really good library for interacting with RESTful web services.  </li>
+<li>Following from that <a href="http://www.raywenderlich.com/" title="Ray Wenderlich">Ray Wenderlich</a> is my new best friend. This site has tutorials which cover everything I’ve needed thus far. Most of my learning has been from here.  </li>
+<li>Visual Studio is a really good IDE. Using XCode after spending so long with Visual Studio is like moving from the new Mercedes Benz C-Class to my current student card 2004 Renault Clio. At times I think it’s just a glorified text editor. The debugging process is silly. It doesn’t automate tasks which I assume should be easily automated. But it works. Most times.  </li>
+<li>The Mac OS operating system is what Ubuntu should have been. The Unix interface and general use is similar, but it’s prettier, and more user friendly.  </li>
+<li>Mobile is the future. Creating apps instead of creating web applications has just shown that with mobile apps, one can truly create a personal experience interacting with user preferences and other user data which can be stored per user on their own device. Also, unlike the bottlenecks of the state-less nature of the web, developing apps instead of web sites becomes so much easier, and allows for so much more.</li>
+</ol>
+
+<p>This journey has recently started, but it looks like an interesting one. I’m still a Microsoft lover and evangelist, but this has opened my previously myopic eyes to a bigger world out there with a larger range of possibilities.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/patrick/" style="background-image: url(http://www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s&amp;)"><span class="hidden">Patrick Kayongo's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/patrick/">Patrick Kayongo</a></h4>
+
+                    <p>Read <a href="../author/patrick/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Early%20Thoughts%20on%20iOS%20Development&amp;url=http://localhost:2368/early-thoughts-on-ios-development/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/early-thoughts-on-ios-development/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://localhost:2368/early-thoughts-on-ios-development/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+    </article>
+</main>
+
+<aside class="read-next">
+    <a class="read-next-story no-cover" href="../commenting-code/">
+        <section class="post">
+            <h2>Commenting Code</h2>
+            <p>I have never had a ‘standard’ in mind on commenting code. There are principles that one should think of,…</p>
+        </section>
+    </a>
+    <a class="read-next-story prev no-cover" href="../communication/">
+        <section class="post">
+            <h2>Communication</h2>
+            <p>A few years ago, my goal was to be the best software developer ever. Over time, that didn’t…</p>
+        </section>
+    </a>
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="../">Pat Kayongo's Software Development Blog</a> © 2017</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=36acbe3795"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=36acbe3795"></script>
+
+</body>

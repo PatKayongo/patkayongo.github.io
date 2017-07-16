@@ -1,0 +1,203 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Pairing vs Pull Request Reviews</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=36acbe3795">
+
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Pat Kayongo's Software Development Blog">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Pairing vs Pull Request Reviews">
+    <meta property="og:description" content="Some like them. Some hate them. But code reviews are a good thing. Some may think they are demigods who fart out perfect code, and therefore think them irrelevant. Others think they are absolutely terrible and don't want to be openly found out, and are therefore scared of them. But">
+    <meta property="og:url" content="http://localhost:2368/pairing-vs-pull-request-reviews/">
+    <meta property="article:published_time" content="2017-02-21T15:06:35.000Z">
+    <meta property="article:modified_time" content="2017-02-21T15:06:35.000Z">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Pairing vs Pull Request Reviews">
+    <meta name="twitter:description" content="Some like them. Some hate them. But code reviews are a good thing. Some may think they are demigods who fart out perfect code, and therefore think them irrelevant. Others think they are absolutely terrible and don't want to be openly found out, and are therefore scared of them. But">
+    <meta name="twitter:url" content="http://localhost:2368/pairing-vs-pull-request-reviews/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Patrick Kayongo">
+    <meta name="twitter:site" content="@patkayongo">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Pat Kayongo&#x27;s Software Development Blog",
+        "logo": "http://localhost:2368/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Patrick Kayongo",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "http://localhost:2368/author/patrick/",
+        "sameAs": []
+    },
+    "headline": "Pairing vs Pull Request Reviews",
+    "url": "http://localhost:2368/pairing-vs-pull-request-reviews/",
+    "datePublished": "2017-02-21T15:06:35.000Z",
+    "dateModified": "2017-02-21T15:06:35.000Z",
+    "description": "Some like them. Some hate them. But code reviews are a good thing. Some may think they are demigods who fart out perfect code, and therefore think them irrelevant. Others think they are absolutely terrible and don&#x27;t want to be openly found out, and are therefore scared of them. But",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Pat Kayongo's Software Development Blog" href="../rss/index.html">
+</head>
+<body class="post-template nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="index.html#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home"><a href="../">Home</a></li>
+    </ul>
+        <a class="subscribe-button icon-feed" href="../rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button icon-menu" href="index.html#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post">
+
+        <header class="post-header">
+            <h1 class="post-title">Pairing vs Pull Request Reviews</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2017-02-21">21 February 2017</time> 
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>Some like them. Some hate them. But code reviews are a good thing. Some may think they are demigods who fart out perfect code, and therefore think them irrelevant. Others think they are absolutely terrible and don't want to be openly found out, and are therefore scared of them. But they are good.</p>
+
+<p>For one, they provide knowledge transfer. Firstly, knowledge of what someone did. It gives another developer in a team an understanding of how a feature or requirement was implemented, incase the original developer gets stuck in an eternal line at the Department of Home Affairs (so much better than being hit by a bus). Secondly, new methods and interesting techniques can be learned by seeing how someone does it. In addition to this, bad methods and techniques can be corrected, helping developers improve. Reviews are good both for the developer, and the quality of the code base. But how the reviews are done is a topic of contention. </p>
+
+<p>There is a caricatured camp, who normally run around calling themselves archaic terms appropriated from an era in European history ('apprentice', 'journeyman' and 'craftsman'). They ordinarily advocate for this idea of 'pairing', where there are two developers, two keyboards and one screen plugged into one computer. These developers continually switch between who is writing the code, and who is an active, engaged observer.</p>
+
+<p>Then there is another caricatured group. They are normally known to their masters as 'resources'. They normally work individually, committing their changes to a source repository <em>branch</em>. When they are done (hopefully after a short period of time), they submit a pull-request for the code they have written to be reviewed by someone. This is either by a peer, or the Lord Baal Architect in the team, who suggests changes where necessary, and merges the changes in when happy.</p>
+
+<p>These are obviously oversimplified, biased versions of each, but the crux each method of reviewing has pros and cons.</p>
+
+<p>Pull request reviews are great for distributed teams, where one can't sit side by side and online communication is awkward. It is also great for individual problem solving, where talking can become distracting to the thought process. Talking to someone all day is tiring. Especially if they aren't pleasant. And don't wash their hands. And make <em>"that's what she said"</em> jokes all day. And it may be more clear having someone see the end of your thought process, instead of the unstructured safari in your mind.</p>
+
+<p>Yet, with these advantages, I have still found pairing to be beneficial for both the individual software developer, and a small co-located software team for the following reasons:</p>
+
+<ol>
+<li><p><strong>Quicker feedback</strong> <br>
+If I start working on something at 8am in the morning, work hard through the day, and feel I'm ready to submit my pull-request at 3pm, I have to wait until someone has time to take a look at it. In that waiting, I start something else. Then, on the morrow, at 9:34am, Tongai, the senior developer on the team has time to take a look at it. She calls me to her desk, and I start walking her through the code I wrote. She asks me why I chose that particular technique within the commit I made at 11:16am on the eve. I think, but the thoughts of the new thing I'm working on are consuming my mind. Eventually, I vaguely remember it was based on something I saw on StackOverflow. But can't really remember. It would've been so great if she asked me at 11:14 yesterday.</p></li>
+<li><p><strong>Deeper learning</strong> <br>
+Software development learning happens more in the process than in the corrections of the outcome. If new insights and course corrections can be made during one's thinking, allowing one to apply and internalise that knowledge immediately, learning can be deeper. Also, when the reviewer is going through the code, they don't have time to think as deeply as you thought about it, and properly understand the context and reasoning compared to if they were part of the development process at the time. </p></li>
+<li><p><strong>Awkward scrutiny</strong> <br>
+Sometimes, while your review is being done, there is this awkward feeling of being a kid at school having your test marked in front of you by Mr. Qengwa. The same thing can happen while pairing, but there is this difference when someone is co-labouring with you, compared to when someone is reviewing post the fact. With one, co-building is the goal. With the other, despite it being constructive, the mood leans towards scrutiny.</p></li>
+</ol>
+
+<p>Now, all this doesn't take away from the fact that pairing is kinda hard. And the benefit is highly correlated to the personalities within the pair. Yet, despite this, I've still found that the technical learning one gets from pairing is deeper, and the emotional maturity and 'soft-skills' (which are really hard skills) that are developed to be more. There are numerous posts on <em>the cyber</em> about pairing well, and mistakes to avoid making. I would recommend DuckDuckGo-ing them.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/patrick/" style="background-image: url(http://www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s&amp;)"><span class="hidden">Patrick Kayongo's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/patrick/">Patrick Kayongo</a></h4>
+
+                    <p>Read <a href="../author/patrick/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Pairing%20vs%20Pull%20Request%20Reviews&amp;url=http://localhost:2368/pairing-vs-pull-request-reviews/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/pairing-vs-pull-request-reviews/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://localhost:2368/pairing-vs-pull-request-reviews/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+    </article>
+</main>
+
+<aside class="read-next">
+    <a class="read-next-story no-cover" href="../testing-react-native-the-what-2/">
+        <section class="post">
+            <h2>Testing React (&amp; Native) Components</h2>
+            <p>React is big. Really big. It is the web framework that you need to be doing right now. It…</p>
+        </section>
+    </a>
+    <a class="read-next-story prev no-cover" href="../ecma-specification-safari-increment-and-decrement-operators/">
+        <section class="post">
+            <h2>ECMA Specification Safari: Increment (and Decrement) Operators</h2>
+            <p>Recently, I’ve started reading through the ECMA Script (JavaScript) specification to get a more in depth understanding of…</p>
+        </section>
+    </a>
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="../">Pat Kayongo's Software Development Blog</a> © 2017</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=36acbe3795"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=36acbe3795"></script>
+
+</body>

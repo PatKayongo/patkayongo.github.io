@@ -1,0 +1,203 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>A .Net Developer's Initial Thoughts on the Django Framework</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=36acbe3795">
+
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Pat Kayongo's Software Development Blog">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="A .Net Developer's Initial Thoughts on the Django Framework">
+    <meta property="og:description" content="Python has been my ‘I need to learn this sometime soon’ language for the past two years. I’m not sure why. A few weeks ago, I started playing around with it to learn the basic syntax using code katas. That was fun. But while code katas help one figure">
+    <meta property="og:url" content="http://localhost:2368/a-net-developers-initial-thoughts-on-the-django-framework/">
+    <meta property="article:published_time" content="2015-02-15T06:43:37.000Z">
+    <meta property="article:modified_time" content="2015-02-15T06:43:37.000Z">
+    <meta property="article:tag" content=".Net">
+    <meta property="article:tag" content="ASP">
+    <meta property="article:tag" content="django">
+    <meta property="article:tag" content="mvc">
+    <meta property="article:tag" content="python">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="A .Net Developer's Initial Thoughts on the Django Framework">
+    <meta name="twitter:description" content="Python has been my ‘I need to learn this sometime soon’ language for the past two years. I’m not sure why. A few weeks ago, I started playing around with it to learn the basic syntax using code katas. That was fun. But while code katas help one figure">
+    <meta name="twitter:url" content="http://localhost:2368/a-net-developers-initial-thoughts-on-the-django-framework/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Patrick Kayongo">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content=".Net, ASP, django, mvc, python">
+    <meta name="twitter:site" content="@patkayongo">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Pat Kayongo&#x27;s Software Development Blog",
+        "logo": "http://localhost:2368/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Patrick Kayongo",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "http://localhost:2368/author/patrick/",
+        "sameAs": []
+    },
+    "headline": "A .Net Developer&#x27;s Initial Thoughts on the Django Framework",
+    "url": "http://localhost:2368/a-net-developers-initial-thoughts-on-the-django-framework/",
+    "datePublished": "2015-02-15T06:43:37.000Z",
+    "dateModified": "2015-02-15T06:43:37.000Z",
+    "keywords": ".Net, ASP, django, mvc, python",
+    "description": "Python has been my ‘I need to learn this sometime soon’ language for the past two years. I’m not sure why. A few weeks ago, I started playing around with it to learn the basic syntax using code katas. That was fun. But while code katas help one figure",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Pat Kayongo's Software Development Blog" href="../rss/index.html">
+</head>
+<body class="post-template tag-net tag-asp tag-django tag-mvc tag-python nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="index.html#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home"><a href="../">Home</a></li>
+    </ul>
+        <a class="subscribe-button icon-feed" href="../rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button icon-menu" href="index.html#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-net tag-asp tag-django tag-mvc tag-python">
+
+        <header class="post-header">
+            <h1 class="post-title">A .Net Developer's Initial Thoughts on the Django Framework</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-02-15">15 February 2015</time>  on <a href="../tag/net/">.Net</a>, <a href="../tag/asp/">ASP</a>, <a href="../tag/django/">django</a>, <a href="../tag/mvc/">mvc</a>, <a href="../tag/python/">python</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>Python has been my ‘I need to learn this sometime soon’ language for the past two years. I’m not sure why. A few weeks ago, <a href="http://www.patkayongo.co.za/2015/01/learning-python-and-testing-with-code-katas/" title="Learning Python and Testing with Code Katas">I started playing around with it to learn the basic syntax using code katas</a>. That was fun. But while code katas help one figure out ways to solve common problems, many of them are really language agnostic, and one can’t really build something useful using knowledge gained only from code katas. This week, I had some spare time and decided to play around more with the Django framework for python.</p>
+
+<p>Now the code katas did help, because now I understood the basics of the languages like class and method declarations, how variables work, etc. This helped the easing into the <a href="https://docs.djangoproject.com/en/1.7/intro/tutorial01/" title="Writing Your First Django App">tutorial I used</a> to help me learn the framework.</p>
+
+<p>Here are my initial thoughts on the framework.</p>
+
+<ul>
+<li>It’s an MVC framework very similar to ASP.Net MVC besides a few semantics. The words used for concepts are different, but the basic structure is the same: - Templates in the Django framework are synonymous with Views in ASP.Net MVC. In Django, templating is done using these html files called Templates and in ASP.Net MVC, templating is done using cshtml files.</li>
+<li>Views in the Django framework are synonymous with controller methods in ASP.Net MVC. This was a bit confusing at first. Views mean different things in the different language frameworks, but they actually do the same thing.</li>
+<li>Routes are done differently. In the Django framework, routes are specified using regular expressions in the url.py file. In ASP.Net MVC, routes are either automagically determined using the controller name and controller method, or can be specified using the Route attribute. I’m not very familiar with regular expressions at the moment, so I favoured the ASP.NET MVC approach here. The Flask framework for Python has a similar approach as the Route attributes in ASP.NET MVC.</li>
+<li>With Django, the ORM is part of the framework. I’m not sure how I feel about this. I’m from a world where the data-access layer is abstracted to ease testing as well as to prevent tight coupling between the data access framework and the application logic. There are other ORM’s that one can use e.g. SQL Alchemy, but I haven’t found any online discussions where the data access layer is abstracted.</li>
+<li>The unit testing framework which forms a part of Django is interesting. It creates its own test database. I guess this is how they make the close coupling of the ORM and the application logic ‘testable’. I still don’t like it.</li>
+</ul>
+
+<p>Overall, it’s a really great framework. I really liked the idea of changing something in the source code, and have it reflected on the front end immediately without having to build and recompile the source code. It seems to make for faster development. Over the next few weeks, I’m going to attempt to make a simple application I’ve been thinking about, using Python and the Django framework. Watch this space.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/patrick/" style="background-image: url(http://www.gravatar.com/avatar/da733594cc6eacb3ae10c9df7974cedd?s&amp;)"><span class="hidden">Patrick Kayongo's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/patrick/">Patrick Kayongo</a></h4>
+
+                    <p>Read <a href="../author/patrick/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=A%20.Net%20Developer's%20Initial%20Thoughts%20on%20the%20Django%20Framework&amp;url=http://localhost:2368/a-net-developers-initial-thoughts-on-the-django-framework/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/a-net-developers-initial-thoughts-on-the-django-framework/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://localhost:2368/a-net-developers-initial-thoughts-on-the-django-framework/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+    </article>
+</main>
+
+<aside class="read-next">
+    <a class="read-next-story no-cover" href="../interface-segregation-and-objective-c-delegates/">
+        <section class="post">
+            <h2>Interface Segregation and Objective C Delegates</h2>
+            <p>The fourth principle of the SOLID principles is the Interface Segregation Principle. According to Wikipedia, the authority on most…</p>
+        </section>
+    </a>
+    <a class="read-next-story prev no-cover" href="../objective-c-posting-foundation-objects-with-afnetworking/">
+        <section class="post">
+            <h2>Objective C: Posting Foundation Objects with AFNetworking</h2>
+            <p>The scenario was this. I had Objective C objects which I needed to parse as JSON, and send a…</p>
+        </section>
+    </a>
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="../">Pat Kayongo's Software Development Blog</a> © 2017</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=36acbe3795"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=36acbe3795"></script>
+
+</body>
